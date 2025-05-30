@@ -51,7 +51,6 @@ export class DynamicFormComponent implements OnInit {
     // Emite os dados do formulário quando ele é submetido e está válido
     if (this.form.valid) {
       this.formSubmitted.emit(this.form.value);
-      console.log(this.form.value);
     }
   }
   onCancel(): void {

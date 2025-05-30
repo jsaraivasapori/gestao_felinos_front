@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ExpandableTableComponent } from '../../components/expandable-table/expandable-table.component';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
@@ -7,6 +7,9 @@ import { MatCardModule } from '@angular/material/card';
 import { BooleanIconPipe } from '../../pipes/boolean-icon/boolean-icon.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { FelinoService } from '../../services/felinoService/felino.service';
+import { Observable } from 'rxjs';
+import { Felino } from '../../models/felinoModel/felino-model';
 @Component({
   selector: 'app-felinos',
   standalone: true,
@@ -22,58 +25,37 @@ import { CommonModule } from '@angular/common';
   templateUrl: './felinos.component.html',
   styleUrl: './felinos.component.scss',
 })
-export class FelinosComponent {
+export class FelinosComponent implements OnInit {
+  showTable: boolean = true;
+
+  felinos$!: Observable<Felino[]>;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private felinoService: FelinoService
   ) {}
-  showTable: boolean = true;
-
-  elementos: any[] = [
-    {
-      id: 1,
-      nome: 'Duda',
-      idade: 9,
-      raca: 'sem raca',
-      dataResgate: '20/08/2016',
-      fiv: false,
-      felv: false,
-      pif: false,
-      isolamento: true,
-      observacao:
-        'lsmakmsakls sasjalks alsklasçlask assdddddd ddddddd ddddddd dddddddd ddddddddddddd ddddddddddd  ddddddddddddddd ddddddddd  dddddd ddddddmlalsças a ssajskajslkajslkasasçamsçasmçl,ç snasjkajsaksjasjm askjaskasaks',
-    },
-    {
-      id: 2,
-      nome: 'Bertingo',
-      idade: 1,
-      raca: 'Sem raça',
-      dataResgate: '20/08/2016',
-      fiv: false,
-      felv: false,
-      pif: false,
-      isolamento: true,
-      observacao:
-        'lsmakmsakls sasjalks alsklasçlask asmlalsças a ssajskajslkajslkasasçamsçasmçl,ç snasjkajsaksjasjm askjaskasajv',
-    },
-  ];
+  ngOnInit() {
+    this.felinos$ = this.felinoService.felinos$;
+    console.log(this.felinos$);
+  }
   /**
    * Método getter para saber qual rota está.
-   *
-   *
-   *
-   *
    */
   get isFormRoute(): boolean {
     return this.router.url === '/home/felinos/form';
   }
 
-  toEdit(data: any): void {
-    console.log(data);
+  toEdit(data: Felino): void {
     this.showTable = false;
     this.sharedService.setData('currentFeline', data);
+
     this.router.navigate(['form'], { relativeTo: this.route });
+  }
+
+  toDelete(id: string) {
+    this.showTable = false;
+    this.felinoService.delete(id).subscribe();
   }
 
   addNewFeline(): void {

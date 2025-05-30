@@ -4,6 +4,8 @@ import { Validators } from '@angular/forms';
 import { FormField } from '../../../models/form-field';
 import { SharedService } from '../../../services/shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FelinoService } from '../../../services/felinoService/felino.service';
+import { Felino } from '../../../models/felinoModel/felino-model';
 
 @Component({
   selector: 'app-felinos-form',
@@ -40,18 +42,12 @@ export class FelinosFormComponent {
       validators: [Validators.required],
       errorMessages: { required: 'Selecione uma categoria.' },
       options: [
-        { value: 'sem raca', label: 'Sem Raça' },
+        { value: 'sem_raca', label: 'Sem Raça' },
         { value: 'siames', label: 'Siamês' },
         { value: 'persa', label: 'Persa' },
       ],
     },
-    {
-      name: 'dataResgate',
-      label: 'Data de Resgate',
-      type: 'dateMasked', //
-      validators: [Validators.required],
-      errorMessages: { required: 'Data de resgate  é obrigatória.' },
-    },
+
     {
       name: 'observacao',
       label: 'Observação',
@@ -61,8 +57,8 @@ export class FelinosFormComponent {
     },
     // Os campos do tipo slide-toggle ficarão agrupados no DynamicForm
     {
-      name: 'isolamento',
-      label: 'Isolamento',
+      name: 'isolado',
+      label: 'isolado',
       type: 'slide-toggle',
       value: false,
     },
@@ -91,13 +87,13 @@ export class FelinosFormComponent {
   constructor(
     private sharedService: SharedService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private felinoService: FelinoService
   ) {}
 
   ngOnInit(): void {
     this.initialData = this.sharedService.getData('currentFeline');
     // Se estiver no modo de edição, preenche os dados iniciais
-    // (exemplo fictício, ajuste conforme a sua lógica)
 
     if (this.initialData && this.initialData.id) {
       this.isEditMode = true;
@@ -117,12 +113,31 @@ export class FelinosFormComponent {
    *
    * @param formValue - Os dados enviados pelo formulário dynamic-form.
    */
-  onFormSubmitted(formValue: any): void {
-    console.log('Formulário submetido:', formValue);
-    // Aqui você pode chamar sua API (POST para criação ou PUT para atualização)
-    // Exemplo: this.apiService.save(formValue).subscribe(...);
-    this.sharedService.clearData('currentFeline');
-    this.router.navigate(['../'], { relativeTo: this.route });
+  onFormSubmitted(formValue: Felino): void {
+    if (this.isEditMode) {
+      console.log(this.initialData.id);
+
+      this.felinoService
+        .updateFelino(this.initialData.id, formValue)
+        .subscribe({
+          complete: () => {
+            this.sharedService.clearData('currentFeline');
+            this.router.navigate(['../'], { relativeTo: this.route });
+          },
+          error: (error) => {
+            console.error(error);
+          },
+        });
+    } else {
+      this.felinoService.createFelino(formValue).subscribe({
+        complete: () => {
+          this.router.navigate(['../'], { relativeTo: this.route });
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+    }
   }
 
   onCancel(): void {

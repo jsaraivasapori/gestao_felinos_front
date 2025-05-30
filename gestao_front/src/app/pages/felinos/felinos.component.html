@@ -9,12 +9,12 @@
       (click)="addNewFeline()"
       color="primary"
     >
-      Adicionar
+      Novo Felino
     </button>
   </div>
   <div>
     <app-expandable-table
-      [dataSource]="elementos"
+      [dataSource]="(felinos$ | async) || []"
       [columnsToDisplay]="[
         'nome',
         'idade',
@@ -22,7 +22,7 @@
         'fiv',
         'felv',
         'pif',
-        'isolamento'
+        'isolado'
       ]"
       [columnHeaders]="{
         nome: 'Nome',
@@ -31,7 +31,7 @@
         fiv: 'FIV',
         felv: 'FELV',
         pif: 'PIF',
-        isolamento: 'Isolamento'
+        isolado: 'Isolado'
       }"
     >
       <ng-template #expandedRowContent let-element>
@@ -69,7 +69,7 @@
               <div class="col-lg-6 col-lg-12 col-xxl-6 position-midia-query">
                 <div class="row g-0">
                   <div class="col-6 col-sm-3">
-                    <span class="label-content">Isolmento:</span>
+                    <span class="label-content">Isolado:</span>
                     <span class="info"
                       ><mat-icon
                         [class.positive]="element.isolamento"
@@ -136,7 +136,7 @@
               <button
                 mat-raised-button
                 color="warn"
-                (click)="toEdit(element)"
+                (click)="toDelete(element.id)"
                 class="excluir"
               >
                 Excluir

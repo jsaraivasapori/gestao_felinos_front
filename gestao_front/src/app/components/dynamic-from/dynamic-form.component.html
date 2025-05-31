@@ -74,18 +74,24 @@
                 [formControlName]="field.name"
                 [type]="field.type"
               />
-              <mat-error
-                *ngIf="
-                  form.get(field.name)?.invalid &&
-                  (form.get(field.name)?.dirty || form.get(field.name)?.touched)
-                "
-              >
+              @if (form.get(field.name)?.invalid && (form.get(field.name)?.dirty
+              || form.get(field.name)?.touched)) {
+              <mat-error>
                 <ng-container *ngFor="let errKey of getErrorKeys(field)">
                   <span *ngIf="form.get(field.name)?.hasError(errKey)">
                     {{ field.errorMessages ? field.errorMessages[errKey] : "" }}
                   </span>
                 </ng-container>
               </mat-error>
+              }@else if (form.get(field.name)?.hasError('pattern')) {
+              <ng-container *ngFor="let errKey of getErrorKeys(field)">
+                <mat-error>
+                  <span>{{
+                    field.errorMessages ? field.errorMessages[errKey] : ""
+                  }}</span>
+                </mat-error>
+              </ng-container>
+              }
             </mat-form-field>
           </ng-container>
         </div>

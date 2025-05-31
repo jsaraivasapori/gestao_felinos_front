@@ -6,11 +6,12 @@ import { SharedService } from '../../../services/shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FelinoService } from '../../../services/felinoService/felino.service';
 import { Felino } from '../../../models/felinoModel/felino-model';
+import { CardComponent } from '../../../components/card/card.component';
 
 @Component({
   selector: 'app-felinos-form',
   standalone: true,
-  imports: [DynamicFormComponent],
+  imports: [DynamicFormComponent, CardComponent],
   templateUrl: './felinos-form.component.html',
   styleUrl: './felinos-form.component.scss',
 })
@@ -30,9 +31,10 @@ export class FelinosFormComponent {
       name: 'idade',
       label: 'Idade em anos',
       type: 'number',
-      validators: [Validators.required],
+      validators: [Validators.required, Validators.pattern(/^(0|[1-9]d*)$/)],
       errorMessages: {
         required: 'Idade é obigatória',
+        pattern: 'Campo inválido',
       },
     },
     {

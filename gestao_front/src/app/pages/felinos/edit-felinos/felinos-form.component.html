@@ -1,16 +1,16 @@
 <div class="container-fluid mt-4">
   <!-- Título dinâmico: Exibe "Editar Registro" ou "Adicionar Novo Registro" -->
-  <h4 class="p-3">
-    {{ isEditMode ? "Edição de Registro" : " Novo Registro" }}
-  </h4>
-
-  <!-- Componente dinâmico do formulário -->
-  <app-dynamic-form
-    [formConfig]="formConfig"
-    [initialData]="initialData"
-    [submitLabel]="isEditMode ? 'Atualizar' : 'Adicionar'"
-    (formSubmitted)="onFormSubmitted($event)"
-    (cancel)="onCancel()"
-  >
-  </app-dynamic-form>
+  <app-card [title]="isEditMode ? 'Edição de Registro' : ' Novo Registro'">
+    <!-- Componente dinâmico do formulário -->
+    <div content>
+      <app-dynamic-form
+        [formConfig]="formConfig"
+        [initialData]="initialData"
+        [submitLabel]="isEditMode ? 'Atualizar' : 'Adicionar'"
+        (formSubmitted)="onFormSubmitted($event)"
+        (cancel)="onCancel()"
+      >
+      </app-dynamic-form>
+    </div>
+  </app-card>
 </div>

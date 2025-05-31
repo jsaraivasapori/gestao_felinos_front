@@ -36,6 +36,15 @@ export class FelinosFormComponent {
       },
     },
     {
+      name: 'dataResgate',
+      label: 'Data de Resgate',
+      type: 'dateMasked',
+      validators: [Validators.required],
+      errorMessages: {
+        required: 'Data de resgate obrigatória',
+      },
+    },
+    {
       name: 'raca',
       label: 'Raça',
       type: 'select',

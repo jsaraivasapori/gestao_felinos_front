@@ -1,6 +1,8 @@
 <div class="container-fluid mt-4">
   <!-- Título dinâmico: Exibe "Editar Registro" ou "Adicionar Novo Registro" -->
-  <h3>{{ isEditMode ? "Editando Registro" : "Adicionando Novo Registro" }}</h3>
+  <h4 class="p-3">
+    {{ isEditMode ? "Edição de Registro" : " Novo Registro" }}
+  </h4>
 
   <!-- Componente dinâmico do formulário -->
   <app-dynamic-form

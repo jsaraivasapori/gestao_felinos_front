@@ -50,6 +50,13 @@ export class DynamicFormComponent implements OnInit {
   onSubmit(): void {
     // Emite os dados do formulário quando ele é submetido e está válido
     if (this.form.valid) {
+      this.form.value.dataResgate = this.form.value.dataResgate.replace(
+        /(\d{2})(\d{2})(\d{4})/,
+        '$1/$2/$3'
+      );
+
+      alert('Submetido');
+
       this.formSubmitted.emit(this.form.value);
     }
   }

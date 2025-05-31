@@ -141,10 +141,17 @@
       color="primary"
       type="submit"
       [disabled]="form.invalid || form.pristine"
+      class="m-2"
     >
       {{ submitLabel }}
     </button>
-    <button type="button" mat-flat-button color="warn" (click)="onCancel()">
+    <button
+      type="button"
+      class="m-2"
+      mat-flat-button
+      color="warn"
+      (click)="onCancel()"
+    >
       Cancelar
     </button>
   </div>

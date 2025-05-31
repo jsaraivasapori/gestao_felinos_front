@@ -48,7 +48,9 @@ export class FelinosComponent implements OnInit {
 
   toEdit(data: Felino): void {
     this.showTable = false;
+
     this.sharedService.setData('currentFeline', data);
+    console.log(data);
 
     this.router.navigate(['form'], { relativeTo: this.route });
   }

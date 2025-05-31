@@ -1,0 +1,12 @@
+<mat-card class="mat-elevation-z8">
+  <mat-card-header>
+    <ng-content select="[header]">
+      <mat-card-title class="m-2">{{ title }}</mat-card-title>
+      <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle>
+    </ng-content>
+  </mat-card-header>
+  <ng-content select="[content]"></ng-content>
+  <mat-card-footer>
+    <ng-content select="[actions]"></ng-content>
+  </mat-card-footer>
+</mat-card>

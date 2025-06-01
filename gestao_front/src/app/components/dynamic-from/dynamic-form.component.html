@@ -3,7 +3,7 @@
     <!-- Linha para os campos normais: inputs (text, number), select e date mascarado -->
     <div class="row" *ngIf="getNonToggleAndNonTextareaFields().length > 0">
       <ng-container *ngFor="let field of getNonToggleAndNonTextareaFields()">
-        <div class="col-md-6 mb-3">
+        <div class="col-12 mb-3">
           <ng-container [ngSwitch]="field.type">
             <!-- Campo do tipo select -->
             <mat-form-field

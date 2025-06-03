@@ -60,7 +60,9 @@
 
                   <div class="col-6 col-sm-3">
                     <span class="label-content">Resgate:</span>
-                    <span class="info">{{ element.dataResgate }}</span>
+                    <span class="info">{{
+                      element.dataResgate | date : "dd/MM/YYYY"
+                    }}</span>
                   </div>
                 </div>
               </div>

@@ -40,7 +40,7 @@ export class FelinosFormComponent {
     {
       name: 'dataResgate',
       label: 'Data de Resgate',
-      type: 'dateMasked',
+      type: 'datePicker',
       validators: [Validators.required],
       errorMessages: {
         required: 'Data de resgate obrigatória',

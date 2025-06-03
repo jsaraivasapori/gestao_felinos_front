@@ -34,9 +34,40 @@
               </mat-error>
             </mat-form-field>
 
-            <!-- Campo do tipo date com máscara (substituindo o datepicker) -->
+            <!-- DataPicker -->
             <mat-form-field
-              *ngSwitchCase="'dateMasked'"
+              *ngSwitchCase="'datePicker'"
+              appearance="fill"
+              style="width: 100%"
+            >
+              <mat-label>{{ field.label }}</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                [formControlName]="field.name"
+              />
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+
+              <mat-error
+                *ngIf="
+                  form.get(field.name)?.invalid &&
+                  (form.get(field.name)?.dirty || form.get(field.name)?.touched)
+                "
+              >
+                <ng-container *ngFor="let errKey of getErrorKeys(field)">
+                  <span *ngIf="form.get(field.name)?.hasError(errKey)">
+                    {{ field.errorMessages ? field.errorMessages[errKey] : "" }}
+                  </span>
+                </ng-container>
+              </mat-error>
+            </mat-form-field>
+            <!-- Campo do text S com máscara (substituindo o datepicker) -->
+            <mat-form-field
+              *ngSwitchCase="'texMasked'"
               appearance="fill"
               style="width: 100%"
             >
@@ -62,7 +93,7 @@
               </mat-error>
             </mat-form-field>
 
-            <!-- Campo padrão para outros inputs (tipo text, number, etc.) -->
+            <!-- Campo padrão para outros inputs (tipo text, number, email) -->
             <mat-form-field
               *ngSwitchDefault
               appearance="fill"

@@ -9,9 +9,32 @@
   @for(column of columnsToDisplay; track column){
 
   <ng-container [matColumnDef]="column">
-    <th mat-header-cell cdkDrag *matHeaderCellDef>
+    <th
+      mat-header-cell
+      cdkDrag
+      *matHeaderCellDef
+      [cdkDragDisabled]="column === 'action'"
+    >
       {{ columnHeaders[column] || column }}
     </th>
+    @if (column == 'action') {
+    <td mat-cell *matCellDef="let element">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Deletar cadastro"
+        (click)="toEdit(element)"
+        class="cursor-pointer icon-color"
+        >visibility</mat-icon
+      >
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Deletar cadastro"
+        (click)="toDelete(element)"
+        class="cursor-pointer icon-color"
+        >delete</mat-icon
+      >
+    </td>
+    }
     <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
   </ng-container>
   }

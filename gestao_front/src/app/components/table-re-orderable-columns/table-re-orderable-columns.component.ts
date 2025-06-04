@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   CdkDragDrop,
   CdkDrag,
@@ -6,10 +6,11 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-table-re-orderable-columns',
   standalone: true,
-  imports: [MatTableModule, CdkDropList, CdkDrag],
+  imports: [MatTableModule, MatIconModule, CdkDropList, CdkDrag],
   templateUrl: './table-re-orderable-columns.component.html',
   styleUrl: './table-re-orderable-columns.component.scss',
 })
@@ -17,7 +18,8 @@ export class TableReOrderableColumnsComponent {
   @Input() dataSource = [];
   @Input() columnsToDisplay: string[] = [];
   @Input() columnHeaders: { [key: string]: string } = {};
-
+  @Output() editElement = new EventEmitter<any>();
+  @Output() deleteElement = new EventEmitter<any>();
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(
       this.columnsToDisplay,
@@ -25,24 +27,14 @@ export class TableReOrderableColumnsComponent {
       event.currentIndex
     );
   }
-}
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
+  toEdit(element: any): void {
+    //Emite os dados da linha para editar no componente pai
+    this.editElement.emit(element);
+  }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
+  toDelete(element: any): void {
+    //Emite os dados da linha para excluir
+    this.deleteElement.emit(element);
+  }
+}

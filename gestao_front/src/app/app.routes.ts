@@ -7,6 +7,7 @@ import { ProcedimentosComponent } from './pages/procedimentos/procedimentos.comp
 import { VoluntariosComponent } from './pages/voluntarios/voluntarios.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { FelinosFormComponent } from './pages/felinos/edit-felinos/felinos-form.component';
+import { VoluntariosFormComponent } from './pages/voluntarios/edit-voluntarios/voluntarios-form.component';
 
 export const routes: Routes = [
   {
@@ -29,10 +30,6 @@ export const routes: Routes = [
             component: FelinosFormComponent,
             path: 'form',
           },
-          {
-            component: FelinosComponent,
-            path: 'novo',
-          },
         ],
       },
       {
@@ -46,6 +43,12 @@ export const routes: Routes = [
       {
         path: 'voluntarios',
         component: VoluntariosComponent,
+        children: [
+          {
+            component: VoluntariosFormComponent,
+            path: 'form',
+          },
+        ],
       },
       {
         path: 'usuarios',

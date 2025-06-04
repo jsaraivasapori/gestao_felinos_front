@@ -26,8 +26,6 @@ import { Felino } from '../../models/felinoModel/felino-model';
   styleUrl: './felinos.component.scss',
 })
 export class FelinosComponent implements OnInit {
-  showTable: boolean = true;
-
   felinos$!: Observable<Felino[]>;
   constructor(
     private router: Router,
@@ -47,8 +45,6 @@ export class FelinosComponent implements OnInit {
   }
 
   toEdit(data: Felino): void {
-    this.showTable = false;
-
     this.sharedService.setData('currentFeline', data);
     console.log(data);
 
@@ -56,7 +52,6 @@ export class FelinosComponent implements OnInit {
   }
 
   toDelete(id: string) {
-    this.showTable = false;
     this.felinoService.delete(id).subscribe();
   }
 

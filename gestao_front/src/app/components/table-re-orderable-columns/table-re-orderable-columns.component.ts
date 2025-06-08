@@ -7,10 +7,17 @@ import {
 } from '@angular/cdk/drag-drop';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-table-re-orderable-columns',
   standalone: true,
-  imports: [MatTableModule, MatIconModule, CdkDropList, CdkDrag],
+  imports: [
+    MatTableModule,
+    MatIconModule,
+    MatTooltipModule,
+    CdkDropList,
+    CdkDrag,
+  ],
   templateUrl: './table-re-orderable-columns.component.html',
   styleUrl: './table-re-orderable-columns.component.scss',
 })

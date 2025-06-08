@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { LoadingService } from '../../services/loading/loading.service';
+import { LoadingService } from '../../services/loadingService/loading.service';
 import { AsyncPipe } from '@angular/common';
 
 @Component({

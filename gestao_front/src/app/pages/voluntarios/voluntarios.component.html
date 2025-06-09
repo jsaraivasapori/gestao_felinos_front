@@ -2,20 +2,27 @@
 @if(!isFormRoute){
 <div class="container-fluid">
   <div class="w-25 p-3">
-    <button mat-button mat-raised-button color="primary">Novo Felino</button>
+    <button
+      mat-button
+      mat-raised-button
+      color="primary"
+      (click)="addNewVolunteer()"
+    >
+      Novo Felino
+    </button>
   </div>
 </div>
 <app-table-re-orderable-columns
-  [dataSource]="data"
-  [columnsToDisplay]="['nome', 'idade', 'bairro', 'action']"
+  [dataSource]="(voluntarioReceiver$ | async) || []"
+  [columnsToDisplay]="['nome', 'telefone', 'turno', 'action']"
   [columnHeaders]="{
     nome: 'Nome',
-    idade: 'Idade',
-    bairro: 'Bairro',
+    telefone: 'Telefone',
+    turno: 'Turno',
     action: 'Ações'
   }"
   (editElement)="toEditVolunteero($event)"
-  (deleteElement)="toDeleteVolunteer($event)"
+  (deleteElement)="toDeleteVolunteer($event.id)"
 ></app-table-re-orderable-columns>
 
 }@else {<router-outlet></router-outlet>}

@@ -21,6 +21,7 @@ export class VoluntarioService {
   getVoluntarios() {
     this.http.get<Voluntario[]>(`${this.apiUrl}/voluntario`).subscribe({
       next: (dados) => this.voluntarioSubject.next(dados),
+      error: (erro) => console.error('Erro ao carregar:', erro),
     });
   }
 
@@ -57,11 +58,13 @@ export class VoluntarioService {
   delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/voluntario/${id}`).pipe(
       tap(() => {
+        console.log('Antes:', this.voluntarioSubject.value);
         const novaLista = this.voluntarioSubject.value.filter(
           (voluntarioToDelete) => {
-            voluntarioToDelete.id != id;
+            return voluntarioToDelete.id !== id;
           }
         );
+        console.log('Depois:', novaLista);
         this.voluntarioSubject.next(novaLista);
       })
     );

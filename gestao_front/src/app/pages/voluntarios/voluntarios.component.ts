@@ -4,24 +4,35 @@ import { Router, ActivatedRoute, RouterOutlet } from '@angular/router';
 import { SharedService } from '../../services/shared.service';
 import { Voluntario } from '../../models/voluntarioModel/voluntario-model';
 import { MatButtonModule } from '@angular/material/button';
+import { VoluntarioService } from '../../services/voluntarioService/voluntario.service';
+import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-voluntarios',
   standalone: true,
-  imports: [TableReOrderableColumnsComponent, MatButtonModule, RouterOutlet],
+  imports: [
+    TableReOrderableColumnsComponent,
+    MatButtonModule,
+    CommonModule,
+    RouterOutlet,
+  ],
   templateUrl: './voluntarios.component.html',
   styleUrl: './voluntarios.component.scss',
 })
 export class VoluntariosComponent {
-  data: any = [
-    { nome: 'João Vitor', idade: 25, bairro: 'Todos os Santos Prolongamento' },
-    { nome: 'Rosangela', idade: 51, bairro: 'Todos os Santos Prolongamento' },
-  ];
+  voluntarioReceiver$!: Observable<Voluntario[]>;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private voluntarioService: VoluntarioService
   ) {}
+
+  ngOnInit() {
+    this.voluntarioReceiver$ = this.voluntarioService.voluntario$;
+  }
+
   /**
    * Metodo getter que retorna true se estiver na rota de formulario
    */
@@ -33,12 +44,16 @@ export class VoluntariosComponent {
     this.sharedService.setData('currentVolunteer', volunteerToEdit);
     this.router.navigate(['form'], { relativeTo: this.route });
   }
-  toDeleteVolunteer(data: Voluntario) {
-    //chamar modal de confirmação para apagar
-    // alem de passar o id passar o nome do voluntario
-    console.log('Estou deletando:', data);
+  toDeleteVolunteer(id: string) {
+    this.voluntarioService.delete(id).subscribe({
+      next: (data) => {
+        console.log('Deletado:', data);
+      },
+      error: (error) => console.log('Ocorreu um erro:', error),
+    });
   }
   addNewVolunteer(): void {
     this.sharedService.clearData('currentVolunteer');
+    this.router.navigate(['form'], { relativeTo: this.route });
   }
 }

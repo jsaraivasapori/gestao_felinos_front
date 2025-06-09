@@ -22,7 +22,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './table-re-orderable-columns.component.scss',
 })
 export class TableReOrderableColumnsComponent {
-  @Input() dataSource = [];
+  @Input() dataSource: any[] = [];
   @Input() columnsToDisplay: string[] = [];
   @Input() columnHeaders: { [key: string]: string } = {};
   @Output() editElement = new EventEmitter<any>();

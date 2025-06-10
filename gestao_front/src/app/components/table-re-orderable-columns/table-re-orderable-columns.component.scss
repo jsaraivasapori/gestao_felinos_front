@@ -7,3 +7,10 @@ mat-icon {
     color: var(--blue);
   }
 }
+
+.row-focus {
+  &:hover {
+    background-color: var(--primary-color);
+    color: var(--blue);
+  }
+}

@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { VoluntarioService } from '../../services/voluntarioService/voluntario.service';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { SnackBarNotificationService } from '../../services/snackBarNotification/snack-bar-notification.service';
 
 @Component({
   selector: 'app-voluntarios',
@@ -26,7 +27,8 @@ export class VoluntariosComponent {
     private router: Router,
     private route: ActivatedRoute,
     private sharedService: SharedService,
-    private voluntarioService: VoluntarioService
+    private voluntarioService: VoluntarioService,
+    private snackBarService: SnackBarNotificationService
   ) {}
 
   ngOnInit() {
@@ -48,8 +50,13 @@ export class VoluntariosComponent {
     this.voluntarioService.delete(id).subscribe({
       next: (data) => {
         console.log('Deletado:', data);
+        this.snackBarService.showSucess('Sucesso');
       },
-      error: (error) => console.log('Ocorreu um erro:', error),
+      error: (error) => {
+        const erroHour = new Date();
+        console.error(`Erro ocorreu as ${erroHour}. Tipo do erro: ${error}`);
+        this.snackBarService.shoError('Operação não concluida');
+      },
     });
   }
   addNewVolunteer(): void {

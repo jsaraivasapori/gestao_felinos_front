@@ -7,6 +7,7 @@ import { Voluntario } from '../../../models/voluntarioModel/voluntario-model';
 import { FormField } from '../../../models/form-field';
 import { Validators } from '@angular/forms';
 import { VoluntarioService } from '../../../services/voluntarioService/voluntario.service';
+import { SnackBarNotificationService } from '../../../services/snackBarNotification/snack-bar-notification.service';
 
 @Component({
   selector: 'app-voluntarios-form',
@@ -77,7 +78,8 @@ export class VoluntariosFormComponent {
     private sharedService: SharedService,
     private router: Router,
     private route: ActivatedRoute,
-    private voluntarioService: VoluntarioService
+    private voluntarioService: VoluntarioService,
+    private snackBarService: SnackBarNotificationService
   ) {}
 
   ngOnInit(): void {
@@ -99,19 +101,28 @@ export class VoluntariosFormComponent {
         .updateVoluntario(this.initialData.id, formValue)
         .subscribe({
           complete: () => {
+            this.snackBarService.showSucess('Sucesso!');
             this.sharedService.clearData('currentVolunteer');
             this.router.navigate(['../'], { relativeTo: this.route });
           },
           error: (error) => {
-            console.error(error);
+            const erroHour = new Date();
+            console.error(
+              `Erro ocorreu as ${erroHour}. Tipo do erro: ${error}`
+            );
+            this.snackBarService.shoError('Operação não concluida');
           },
         });
     } else {
       this.voluntarioService.createVoluntaraio(formValue).subscribe({
-        complete: () =>
-          this.router.navigate(['../'], { relativeTo: this.route }),
+        complete: () => {
+          this.snackBarService.showSucess('Sucesso');
+          this.router.navigate(['../'], { relativeTo: this.route });
+        },
         error: (error) => {
-          console.error(error);
+          const erroHour = new Date();
+          console.error(`Erro ocorreu as ${erroHour}. Tipo do erro: ${error}`);
+          this.snackBarService.shoError('Operação não concluida');
         },
       });
     }

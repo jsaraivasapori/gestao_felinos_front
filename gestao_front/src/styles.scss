@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap");
 html,
 body {
   height: 100%;
@@ -17,15 +17,6 @@ body {
   --background-color: #fafafa;
   --gray-color: #cfcfcf;
   --blue: #005cbb;
-}
-
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .cursor-pointer:hover {
@@ -57,3 +48,11 @@ body {
   }
 }
 // Foi necessário sobrescrever as variaiveis do snackbar. Ao passar as classes personalizadas ao painelClass, o angular pega os valores personalizados
+
+.page-title {
+  font-size: 40px;
+  font-family: "Open Sans", Roboto;
+  font-weight: 500;
+  letter-spacing: 2px;
+  padding: 1.5rem;
+}

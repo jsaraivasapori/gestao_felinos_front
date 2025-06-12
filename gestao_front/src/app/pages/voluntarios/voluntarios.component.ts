@@ -8,12 +8,14 @@ import { VoluntarioService } from '../../services/voluntarioService/voluntario.s
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { SnackBarNotificationService } from '../../services/snackBarNotification/snack-bar-notification.service';
+import { CardComponent } from '../../components/card/card.component';
 
 @Component({
   selector: 'app-voluntarios',
   standalone: true,
   imports: [
     TableReOrderableColumnsComponent,
+    CardComponent,
     MatButtonModule,
     CommonModule,
     RouterOutlet,

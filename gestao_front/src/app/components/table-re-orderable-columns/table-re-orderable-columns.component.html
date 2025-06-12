@@ -1,6 +1,7 @@
 <table
   mat-table
-  [dataSource]="dataSource"
+  matSort
+  [dataSource]="matDataSource"
   cdkDropList
   cdkDropListOrientation="horizontal"
   (cdkDropListDropped)="drop($event)"
@@ -13,6 +14,7 @@
       mat-header-cell
       cdkDrag
       *matHeaderCellDef
+      mat-sort-header
       [cdkDragDisabled]="column === 'action'"
     >
       {{ columnHeaders[column] || column }}
@@ -49,4 +51,13 @@
     mat-row
     *matRowDef="let row; columns: columnsToDisplay"
   ></tr>
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="4">Sem resgistro</td>
+  </tr>
 </table>
+<mat-paginator
+  [pageSizeOptions]="[5, 10, 15, 20]"
+  showFirstLastButtons
+  aria-label="Select page of periodic elements"
+>
+</mat-paginator>

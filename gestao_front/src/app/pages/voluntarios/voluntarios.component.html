@@ -1,28 +1,40 @@
-<h1>Gestão de Voluntários</h1>
 @if(!isFormRoute){
-<div class="container-fluid">
-  <div class="w-25 p-3">
-    <button
-      mat-button
-      mat-raised-button
-      color="primary"
-      (click)="addNewVolunteer()"
-    >
-      Novo Felino
-    </button>
+<div class="border border-lihgt mb-4">
+  <p class="page-title">Gestão de Voluntários</p>
+
+  <div class="mb-3">
+    <div class="w-25 p-3">
+      <button
+        mat-button
+        mat-raised-button
+        color="primary"
+        class="button-font-size button-max-width"
+        (click)="addNewVolunteer()"
+      >
+        Novo Voluntário
+      </button>
+    </div>
   </div>
 </div>
-<app-table-re-orderable-columns
-  [dataSource]="(voluntarioReceiver$ | async) || []"
-  [columnsToDisplay]="['nome', 'telefone', 'turno', 'action']"
-  [columnHeaders]="{
-    nome: 'Nome',
-    telefone: 'Telefone',
-    turno: 'Turno',
-    action: 'Ações'
-  }"
-  (editElement)="toEditVolunteero($event)"
-  (deleteElement)="toDeleteVolunteer($event.id)"
-></app-table-re-orderable-columns>
+<app-card
+  title="Informações gerais sobre os voluntários"
+  subtitle="Use os icones para interagir com as linhas"
+>
+  <div class="pb-3 px-3 mt-2">
+    <app-table-re-orderable-columns
+      [dataSource]="(voluntarioReceiver$ | async) || []"
+      [columnsToDisplay]="['nome', 'telefone', 'turno', 'action']"
+      [columnHeaders]="{
+        nome: 'Nome',
+        telefone: 'Telefone',
+        turno: 'Turno',
+        action: 'Ações'
+      }"
+      (editElement)="toEditVolunteero($event)"
+      (deleteElement)="toDeleteVolunteer($event.id)"
+    >
+    </app-table-re-orderable-columns>
+  </div>
+</app-card>
 
 }@else {<router-outlet></router-outlet>}

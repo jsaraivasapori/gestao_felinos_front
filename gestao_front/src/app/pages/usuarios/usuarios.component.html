@@ -1,1 +1,44 @@
-<p>usuarios works!</p>
+<div class="border border-lihgt mb-4">
+  <p class="page-title">Cadastro de Usuários</p>
+  <div class="mb-3">
+    <div class="w-25 p-3">
+      <button
+        mat-button
+        mat-raised-button
+        class="button-font-size button-max-width"
+        color="primary"
+      >
+        Novo Cadastro
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="border border-lihgt p-3">
+  <div class="row">
+    @for (usuario of pagedUsuarios(); track $index) {
+    <div class="col-4">
+      <app-card
+        [title]="usuario.perfil"
+        [subtitle]="usuario.nome"
+        imageSrc="/imagens/gato.png"
+      >
+        <mat-divider></mat-divider>
+        <div actions>
+          <button mat-button color="primary">Editar</button>
+          <button mat-button color="warn">Apagar</button>
+        </div>
+      </app-card>
+    </div>
+    }
+  </div>
+  <mat-paginator
+    [length]="usuarios.length"
+    [pageSize]="pageSize"
+    [pageIndex]="currentPage()"
+    (page)="onPageChange($event)"
+    hidePageSize="true"
+    aria-label="Selecionar página"
+  >
+  </mat-paginator>
+</div>

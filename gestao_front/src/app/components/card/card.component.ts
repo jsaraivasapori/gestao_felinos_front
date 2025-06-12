@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './card.component.scss',
 })
 export class CardComponent {
-  @Input() title: any = '';
-  @Input() subtitle: any = '';
+  @Input() title: string = '';
+  @Input() subtitle: string = '';
+  @Input() imageSrc: string = '';
 }

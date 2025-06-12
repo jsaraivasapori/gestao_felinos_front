@@ -1,16 +1,22 @@
 <mat-card class="mat-elevation-z8">
   @if (title ||subtitle) {
   <mat-card-header>
-    @if (title) {
-    <mat-card-title class="mb-3">{{ title }}</mat-card-title
-    >} @if (subtitle) { <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle
-    >}
+    <mat-card-title-group>
+      @if (title) {
+      <mat-card-title class="mb-3">{{ title }}</mat-card-title
+      >} @if (subtitle) { <mat-card-subtitle>{{ subtitle }}</mat-card-subtitle
+      >} @if(imageSrc){
+      <img mat-card-sm-image [src]="imageSrc" loading="lazy" />
+      }
+    </mat-card-title-group>
   </mat-card-header>
   }
-  <!-- Default slot -->
-  <ng-content>
-    <!-- Tudo que n for title, subtitle e actions cai aqui -->
-  </ng-content>
+  <mat-card-content>
+    <!-- Default slot -->
+    <ng-content>
+      <!-- Tudo que n for title, subtitle e actions cai aqui -->
+    </ng-content>
+  </mat-card-content>
   <mat-card-footer>
     <ng-content select="[actions]"></ng-content>
   </mat-card-footer>

@@ -56,3 +56,11 @@ body {
   letter-spacing: 2px;
   padding: 1.5rem;
 }
+.button {
+  &-font-size {
+    font-size: 18px;
+  }
+  &-max-width {
+    width: 100%;
+  }
+}

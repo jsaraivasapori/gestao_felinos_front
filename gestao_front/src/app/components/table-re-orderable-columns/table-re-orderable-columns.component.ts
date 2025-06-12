@@ -75,6 +75,12 @@ export class TableReOrderableColumnsComponent
   ngAfterViewInit() {
     // Conecta o paginador ao dataSource
     this.matDataSource.paginator = this.paginator;
+    this.paginator._intl.firstPageLabel = 'Primeira página';
+    this.paginator._intl.lastPageLabel = 'Última página';
+    this.paginator._intl.itemsPerPageLabel = 'Itens por página';
+    this.paginator._intl.nextPageLabel = 'Próxima página';
+    this.paginator._intl.previousPageLabel = 'Página anterior';
+
     this.matDataSource.sort = this.sort;
 
     //passa os parametros de forma automatica ao clicar no header da coluna

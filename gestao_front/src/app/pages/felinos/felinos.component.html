@@ -1,18 +1,26 @@
-<h1>Cadastro de Felinos</h1>
+@if(!isFormRoute){
+<div class="border border-lihgt mb-4">
+  <p class="page-title">Cadastro de Felinos</p>
 
-<div class="container-fluid">
-  @if(!isFormRoute){
-  <div class="w-25 p-3">
-    <button
-      mat-button
-      mat-raised-button
-      (click)="addNewFeline()"
-      color="primary"
-    >
-      Novo Felino
-    </button>
+  <div class="mb-3">
+    <div class="w-25 p-3">
+      <button
+        mat-button
+        mat-raised-button
+        class="button-font-size button-max-width"
+        (click)="addNewFeline()"
+        color="primary"
+      >
+        Novo Felino
+      </button>
+    </div>
   </div>
-  <div>
+</div>
+<app-card
+  title="Informações gerais sobre os gatinhos"
+  subtitle="Clique nas linha para expandir e interagir com os felinos"
+>
+  <div class="pb-3 px-3 mt-2">
     <app-expandable-table
       [dataSource]="(felinos$ | async) || []"
       [columnsToDisplay]="[
@@ -40,24 +48,20 @@
           <div class="container-fluid">
             <div class="row g-0">
               <!-- Colunas dos elementos não icones -->
-
               <div class="col-lg-6 col-lg-12 col-xxl-6">
                 <div class="row g-0">
                   <div class="col-6 col-sm-3">
                     <span class="label-content">Nome: </span>
                     <span class="info">{{ element.nome }}</span>
                   </div>
-
                   <div class="col-6 col-sm-3">
                     <span class="label-content">Raça: </span>
                     <span class="info">{{ element.raca }}</span>
                   </div>
-
                   <div class="col-6 col-sm-3">
                     <span class="label-content">Idade:</span>
                     <span class="info">{{ element.idade }} ano(s)</span>
                   </div>
-
                   <div class="col-6 col-sm-3">
                     <span class="label-content">Resgate:</span>
                     <span class="info">{{
@@ -67,7 +71,6 @@
                 </div>
               </div>
               <!-- Coluna dos icones -->
-
               <div class="col-lg-6 col-lg-12 col-xxl-6 position-midia-query">
                 <div class="row g-0">
                   <div class="col-6 col-sm-3">
@@ -122,7 +125,6 @@
               </div>
             </div>
           </div>
-
           <!-- Row dos botoês de ação -->
           <div class="row">
             <div class="col-2 m-3">
@@ -149,7 +151,8 @@
       </ng-template>
     </app-expandable-table>
   </div>
-  }@else {
-  <router-outlet></router-outlet>
-  }
-</div>
+</app-card>
+
+}@else {
+<router-outlet></router-outlet>
+}

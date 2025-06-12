@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { FelinoService } from '../../services/felinoService/felino.service';
 import { Observable } from 'rxjs';
 import { Felino } from '../../models/felinoModel/felino-model';
+import { CardComponent } from '../../components/card/card.component';
 @Component({
   selector: 'app-felinos',
   standalone: true,
@@ -21,6 +22,7 @@ import { Felino } from '../../models/felinoModel/felino-model';
     MatCardModule,
     BooleanIconPipe,
     RouterOutlet,
+    CardComponent,
   ],
   templateUrl: './felinos.component.html',
   styleUrl: './felinos.component.scss',

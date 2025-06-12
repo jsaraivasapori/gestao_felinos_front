@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TableReOrderableColumnsComponent } from '../../components/table-re-orderable-columns/table-re-orderable-columns.component';
 import { Router, ActivatedRoute, RouterOutlet } from '@angular/router';
 import { SharedService } from '../../services/shared.service';
@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { SnackBarNotificationService } from '../../services/snackBarNotification/snack-bar-notification.service';
 import { CardComponent } from '../../components/card/card.component';
+import { MatInput, MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-voluntarios',
@@ -17,6 +18,8 @@ import { CardComponent } from '../../components/card/card.component';
     TableReOrderableColumnsComponent,
     CardComponent,
     MatButtonModule,
+    MatInputModule,
+    MatInput,
     CommonModule,
     RouterOutlet,
   ],
@@ -25,6 +28,9 @@ import { CardComponent } from '../../components/card/card.component';
 })
 export class VoluntariosComponent {
   voluntarioReceiver$!: Observable<Voluntario[]>;
+  @ViewChild('filterInput') filterInput!: ElementRef<HTMLInputElement>;
+  currentFilter = '';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -43,7 +49,11 @@ export class VoluntariosComponent {
   get isFormRoute(): boolean {
     return this.router.url === '/home/voluntarios/form';
   }
-
+  handleFilterInput() {
+    const value = this.filterInput.nativeElement.value;
+    console.log('No pai:', value);
+    this.currentFilter = value; // Atualiza diretamente
+  }
   toEditVolunteero(volunteerToEdit: Voluntario) {
     this.sharedService.setData('currentVolunteer', volunteerToEdit);
     this.router.navigate(['form'], { relativeTo: this.route });

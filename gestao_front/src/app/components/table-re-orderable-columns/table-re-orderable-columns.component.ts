@@ -43,7 +43,9 @@ export class TableReOrderableColumnsComponent
   // DataSource interno para a tabela Material para funcionar o paginator
 
   matDataSource = new MatTableDataSource<any>([]);
-  @Input() dataSource!: any[] | Voluntario[];
+  @Input() filterValue: string = '';
+  @Input()
+  dataSource!: any[] | Voluntario[];
   @Input() columnsToDisplay: string[] = [];
   @Input() columnHeaders: { [key: string]: string } = {};
   @Output() editElement = new EventEmitter<any>();
@@ -57,30 +59,10 @@ export class TableReOrderableColumnsComponent
     this.matDataSource.data = this.dataSource;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // Atualiza o dataSource interno quando o input mudar
-    if (changes['dataSource']) {
-      this.matDataSource.data = this.dataSource;
-
-      // Reconecta o paginador e sort se já estiver inicializado
-      if (this.paginator) {
-        this.matDataSource.paginator = this.paginator;
-      }
-      if (this.sort) {
-        this.matDataSource.sort = this.sort;
-      }
-    }
-  }
-
   ngAfterViewInit() {
     // Conecta o paginador ao dataSource
     this.matDataSource.paginator = this.paginator;
-    this.paginator._intl.firstPageLabel = 'Primeira página';
-    this.paginator._intl.lastPageLabel = 'Última página';
-    this.paginator._intl.itemsPerPageLabel = 'Itens por página';
-    this.paginator._intl.nextPageLabel = 'Próxima página';
-    this.paginator._intl.previousPageLabel = 'Página anterior';
-
+    this.paginatorLabelConfig(this.paginator);
     this.matDataSource.sort = this.sort;
 
     //passa os parametros de forma automatica ao clicar no header da coluna
@@ -103,6 +85,55 @@ export class TableReOrderableColumnsComponent
     if (this.dataSource) {
       this.matDataSource.data = this.dataSource;
     }
+    this.applyFilter('');
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Atualiza o dataSource interno quando o input mudar
+    if (changes['dataSource']) {
+      this.matDataSource.data = this.dataSource;
+
+      // Reconecta o paginador e sort se já estiver inicializado
+      if (this.paginator) {
+        this.matDataSource.paginator = this.paginator;
+      }
+      if (this.sort) {
+        this.matDataSource.sort = this.sort;
+      }
+    }
+    //Atualiza o filtro na tabela quando ouver mudança no input filterValue
+    if (changes['filterValue']) {
+      console.log('Filtro recebido no filho:', this.filterValue);
+      this.applyFilter(this.filterValue);
+    }
+  }
+
+  private applyFilter(filterValue: string) {
+    // Configura o predicate apenas na primeira chamada
+    if (!this.matDataSource.filterPredicate) {
+      this.matDataSource.filterPredicate = (data: any, filter: string) => {
+        const dataStr = Object.keys(data)
+          .reduce((acc, key) => acc + (data[key] || '').toString(), '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase();
+        return dataStr.includes(filter);
+      };
+    }
+
+    this.matDataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.matDataSource.paginator) {
+      this.matDataSource.paginator.firstPage();
+    }
+  }
+
+  private paginatorLabelConfig(paginator: MatPaginator) {
+    paginator._intl.firstPageLabel = 'Primeira página';
+    paginator._intl.lastPageLabel = 'Última página';
+    paginator._intl.itemsPerPageLabel = 'Itens por página';
+    paginator._intl.nextPageLabel = 'Próxima página';
+    paginator._intl.previousPageLabel = 'Página anterior';
   }
 
   drop(event: CdkDragDrop<string[]>) {

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  inject,
   signal,
 } from '@angular/core';
 import { CardComponent } from '../../components/card/card.component';
@@ -9,6 +10,8 @@ import { UsuarioCreate } from '../../models/usuarioModel/usuarios-model';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { UserDialogComponent } from './user-dialog/user-dialog.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -69,9 +72,11 @@ export class UsuariosComponent {
     },
   ];
 
-  // Sinais para controle de paginação
+  readonly dialog = inject(MatDialog);
   pageSize = 6;
+  // Sinais para controle de paginação
   currentPage = signal(0);
+
   // Usuários paginados (computado reativo)
   pagedUsuarios = computed(() => {
     const startIndex = this.currentPage() * this.pageSize;
@@ -81,5 +86,15 @@ export class UsuariosComponent {
   // Manipulador de mudança de página
   onPageChange(event: PageEvent) {
     this.currentPage.set(event.pageIndex);
+  }
+
+  //metodo para abrir dialog
+
+  openDialog() {
+    this.dialog.open(UserDialogComponent, {
+      height: '400px',
+      width: '600px',
+      data: '',
+    });
   }
 }

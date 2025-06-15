@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Dialog aberto com sucesso por UsuariosComponent</h2>
+<mat-dialog-content>
+  <app-dynamic-form
+    [formConfig]="formConfig"
+    [initialData]="initialData"
+    [submitLabel]="isEditMode ? 'Atualizar' : 'Adicionar'"
+    (formSubmitted)="onFormSubmitted($event)"
+    (cancel)="onCancel()"
+  >
+  </app-dynamic-form>
+</mat-dialog-content>

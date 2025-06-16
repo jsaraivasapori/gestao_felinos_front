@@ -10,13 +10,15 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class UsuarioServiceService {
+export class UsuarioService {
   apiUrl = `${environment.API_URL}`;
 
   private usuariosSubject = new BehaviorSubject<Usuario[]>([]);
   public usuario$ = this.usuariosSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.getUsuarios();
+  }
 
   getUsuarios() {
     this.http.get<Usuario[]>(`${this.apiUrl}/usuario`).subscribe({
@@ -25,7 +27,7 @@ export class UsuarioServiceService {
     });
   }
 
-  createUsuario(usuario: UsuarioCreate): Observable<Usuario> {
+  create(usuario: UsuarioCreate): Observable<Usuario> {
     return this.http.post<Usuario>(`${this.apiUrl}/usuario`, usuario).pipe(
       tap((novoUsuario) => {
         const listaAtual = this.usuariosSubject.value;
@@ -34,20 +36,20 @@ export class UsuarioServiceService {
     );
   }
 
-  updateUsuario(id: string, data: Partial<Usuario>): Observable<Usuario> {
+  update(id: string, data: Partial<Usuario>): Observable<Usuario> {
     return this.http.patch<Usuario>(`${this.apiUrl}/usuario/${id}`, data).pipe(
       tap((usuarioAtualizado) => {
-        const listaAtual = this.usuariosSubject.value;
         const listaAtualizada = this.usuariosSubject.value.map((usuario) => {
           return usuario.id === id
             ? { ...usuario, ...usuarioAtualizado }
             : usuario;
         });
+        this.usuariosSubject.next(listaAtualizada);
       })
     );
   }
 
-  deleteUusuario(id: string): Observable<void> {
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/usuario/${id}`).pipe(
       tap(() => {
         const novaLista = this.usuariosSubject.value.filter(

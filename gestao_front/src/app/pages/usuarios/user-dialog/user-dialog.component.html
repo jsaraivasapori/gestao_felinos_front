@@ -1,4 +1,8 @@
-<h2 mat-dialog-title>Dialog aberto com sucesso por UsuariosComponent</h2>
+@if (isEditMode) {
+<h2 mat-dialog-title>Editando Usuario</h2>
+}@else {
+<h2 mat-dialog-title>Inserindo Usario</h2>
+}
 <mat-dialog-content>
   <app-dynamic-form
     [formConfig]="formConfig"

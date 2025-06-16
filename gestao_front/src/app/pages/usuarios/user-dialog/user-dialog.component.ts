@@ -1,4 +1,4 @@
-import { Component, inject, model } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogContent,
@@ -8,9 +8,12 @@ import {
 import { DynamicFormComponent } from '../../../components/dynamic-from/dynamic-form.component';
 import { FormField } from '../../../models/form-field';
 import { Validators } from '@angular/forms';
-import { UsuarioCreate } from '../../../models/usuarioModel/usuarios-model';
-import { SharedService } from '../../../services/shared.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  Usuario,
+  UsuarioCreate,
+} from '../../../models/usuarioModel/usuarios-model';
+import { UsuarioService } from '../../../services/usuarioService/usuario-service';
+import { SnackBarNotificationService } from '../../../services/snackBarNotification/snack-bar-notification.service';
 
 @Component({
   selector: 'app-user-dialog',
@@ -19,10 +22,10 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './user-dialog.component.html',
   styleUrl: './user-dialog.component.scss',
 })
-export class UserDialogComponent {
+export class UserDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<UserDialogComponent>);
   readonly data = inject(MAT_DIALOG_DATA);
-  public isEditMode: boolean = false;
+  public isEditMode: boolean = this.data.editMode;
 
   public initialData: any = [];
   public formConfig: FormField[] = [
@@ -40,8 +43,8 @@ export class UserDialogComponent {
       validators: [Validators.required],
       errorMessages: { required: 'Selecione uma categoria.' },
       options: [
-        { value: 'administrador', label: 'Administrador' },
-        { value: 'gerencial', label: 'Gerencial' },
+        { value: 'Administrador', label: 'Administrador' },
+        { value: 'Gerencial', label: 'Gerencial' },
       ],
     },
     {
@@ -58,26 +61,41 @@ export class UserDialogComponent {
       validators: [Validators.required],
       errorMessages: { required: 'Este campo é obrigatório.' },
     },
-    {
-      name: 'dataCriacao',
-      label: 'Criado em:',
-      type: 'datePicker',
-    },
-    {
-      name: 'dataatualziacao',
-      label: 'Atualizado em :',
-      type: 'datePicker',
-    },
   ];
 
   constructor(
-    private sharedService: SharedService,
-    private router: Router,
-    private route: ActivatedRoute
+    private usuarioService: UsuarioService,
+    private snackBarService: SnackBarNotificationService
   ) {}
-  onFormSubmitted(formValue: UsuarioCreate) {
-    console.log('Dados submetidos', formValue);
-    this.dialogRef.close();
+
+  ngOnInit(): void {
+    this.initialData = this.data;
+    console.log('NgOnInit do Modal :', this.initialData);
+  }
+  onFormSubmitted(formValue: UsuarioCreate): void {
+    if (this.isEditMode) {
+      this.usuarioService.update(this.initialData.id, formValue).subscribe({
+        complete: () => {
+          this.dialogRef.close();
+          this.snackBarService.showSucess('Sucesso');
+        },
+
+        error: () => this.snackBarService.shoError('Erro'),
+      });
+    } else {
+      console.log(this.data);
+      this.usuarioService.create(formValue).subscribe({
+        next: () => {
+          this.dialogRef.close();
+
+          this.snackBarService.showSucess('Usuário Cadastrado');
+        },
+        error: (erro) => {
+          console.error(erro);
+          this.snackBarService.shoError('Algo deu errado');
+        },
+      });
+    }
 
     //aqui e para submeter o form
   }

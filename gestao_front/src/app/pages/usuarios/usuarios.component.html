@@ -1,6 +1,6 @@
 <div class="border border-lihgt mb-4">
   <p class="page-title">Cadastro de Usuários</p>
-  <div class="mb-3">
+  <div class="mb-3 d-flex justify-content-between align-items-stretch">
     <div class="w-25 p-3">
       <button
         mat-button
@@ -12,6 +12,15 @@
         Novo Cadastro
       </button>
     </div>
+    <mat-form-field class="p-3 w-25">
+      <mat-label>Busca rápida</mat-label>
+      <input
+        matInput
+        placeholder="Ex. João"
+        #filterInput
+        (keyup)="handleFilterInput($event)"
+      />
+    </mat-form-field>
   </div>
 </div>
 

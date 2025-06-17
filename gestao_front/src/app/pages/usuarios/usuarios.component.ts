@@ -14,9 +14,10 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { UserDialogComponent } from './user-dialog/user-dialog.component';
 import { UsuarioService } from '../../services/usuarioService/usuario-service';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Usuario } from '../../models/usuarioModel/usuarios-model';
 import { SnackBarNotificationService } from '../../services/snackBarNotification/snack-bar-notification.service';
+import { MatInput, MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-usuarios',
@@ -26,6 +27,8 @@ import { SnackBarNotificationService } from '../../services/snackBarNotification
     MatDividerModule,
     MatButtonModule,
     MatPaginatorModule,
+    MatInput,
+    MatInputModule,
   ],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.scss',
@@ -34,17 +37,42 @@ import { SnackBarNotificationService } from '../../services/snackBarNotification
 export class UsuariosComponent implements OnInit, OnDestroy {
   readonly dialog = inject(MatDialog);
 
-  usuarios = signal<Usuario[]>([]);
+  usuarios = signal<Usuario[]>([]); //fonte única de verdade, não alterar diretamente
 
   pageSize = 6;
 
   // Sinais para controle de paginação
   currentPage = signal(0);
 
+  //Estado do filtro (o que o usuário digita)
+  filtro = signal('');
+
+  //Uma nova lista que reage a mudanças nos usuários OU no filtro
+
+  usuariosFiltrados = computed(() => {
+    const lista = this.usuarios();
+    const termo = this.filtro().trim().toLowerCase();
+
+    if (!termo) {
+      return lista; // se o filtro estiver vazio, retorna a lista sem filtrar
+    }
+
+    //filtra pelo nome ou perfil do usuário
+    return lista.filter((usuario) => {
+      return (
+        usuario.nome.toLowerCase().includes(termo) ||
+        usuario.perfil.toLowerCase().trim().includes(termo)
+      );
+    });
+  });
+
   // Usuários paginados (computado reativo)
   pagedUsuarios = computed(() => {
     const startIndex = this.currentPage() * this.pageSize;
-    return this.usuarios().slice(startIndex, startIndex + this.pageSize);
+    return this.usuariosFiltrados().slice(
+      startIndex,
+      startIndex + this.pageSize
+    );
   });
 
   /**Objeto que ira guardar o retorno do método subiscribe() */
@@ -97,5 +125,12 @@ export class UsuariosComponent implements OnInit, OnDestroy {
       width: '600px',
       data: { editMode: isEditing, ...data },
     });
+  }
+
+  handleFilterInput(event: Event) {
+    const filteredValue = (event?.target as HTMLInputElement).value;
+    this.filtro.set(filteredValue);
+    // Voltar para a primeira página sempre que um filtro é aplicado
+    this.currentPage.set(0);
   }
 }

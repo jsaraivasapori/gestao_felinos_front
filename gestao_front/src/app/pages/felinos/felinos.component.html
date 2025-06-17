@@ -128,17 +128,13 @@
           <!-- Row dos botoês de ação -->
           <div class="row">
             <div class="col-2 m-3">
-              <button
-                mat-raised-button
-                (click)="toEdit(element)"
-                color="primary"
-              >
+              <button mat-button (click)="toEdit(element)" color="primary">
                 Editar
               </button>
             </div>
             <div class="col-2 m-3">
               <button
-                mat-raised-button
+                mat-button
                 color="warn"
                 (click)="toDelete(element.id)"
                 class="excluir"

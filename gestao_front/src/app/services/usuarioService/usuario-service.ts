@@ -21,7 +21,7 @@ export class UsuarioService {
   }
 
   getUsuarios() {
-    this.http.get<Usuario[]>(`${this.apiUrl}/usuario`).subscribe({
+    return this.http.get<Usuario[]>(`${this.apiUrl}/usuario`).subscribe({
       next: (dados) => this.usuariosSubject.next(dados),
       error: (erro) => console.error('Erro ao carregar: ', erro),
     });

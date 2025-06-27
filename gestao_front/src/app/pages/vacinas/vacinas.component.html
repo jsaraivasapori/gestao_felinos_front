@@ -1,1 +1,39 @@
-<p>vacinas works!</p>
+<div class="border border-lihgt mb-4">
+  <p class="page-title">Gestão de Vacinas</p>
+
+  <div class="mb-3 d-flex justify-content-between align-items-stretch">
+    <div class="w-25 p-3 mt-2">
+      <button
+        mat-button
+        mat-raised-button
+        color="primary"
+        class="button-font-size button-max-width"
+        (click)="addNewVaccine()"
+      >
+        Nova Vacina
+      </button>
+    </div>
+
+    <mat-form-field class="p-3 w-25">
+      <mat-label>Busca rápida</mat-label>
+      <input
+        matInput
+        placeholder="Ex. João"
+        #filterInput
+        (keyup)="handleFilterInput()"
+      />
+    </mat-form-field>
+  </div>
+</div>
+
+<app-card
+  title="Informações sobre vacinas"
+  subtitle="Use os icones para interagir com as linhas"
+>
+  <div class="pb-3 px-3 mt-2">
+    <app-table-re-orderable-columns
+      [dataSource]="(vacinaReciver$ | async) || []"
+    >
+    </app-table-re-orderable-columns>
+  </div>
+</app-card>

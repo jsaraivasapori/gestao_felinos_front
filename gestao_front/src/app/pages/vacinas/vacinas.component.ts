@@ -69,7 +69,6 @@ export class VacinasComponent implements OnInit, OnDestroy {
     this.inscricaoVacinas = this.vacinasService.vacina$.subscribe({
       next: (arrayVacinas) => {
         this.vacinas.set(arrayVacinas);
-        console.log(arrayVacinas);
       },
     });
   }
@@ -84,13 +83,24 @@ export class VacinasComponent implements OnInit, OnDestroy {
     const filteredValue = (event.target as HTMLInputElement).value;
     this.filtro.set(filteredValue);
   }
-  openDialogVaccine(isEditing: boolean, data?: any) {
+
+  openDialogVaccine(isEditing: boolean, data?: Event) {
     this.dialog.open(VacinaDialogComponent, {
       height: '300px',
       width: '400px',
       data: { editMode: isEditing, ...data },
     });
   }
-  editarVacina(event: Event) {}
-  deletarVacina(id: string) {}
+  deletarVacina(id: string) {
+    console.log(id);
+
+    this.vacinasService.delete(id).subscribe({
+      next: () => {
+        this.snackBarService.showSucess('Sucesso');
+      },
+      error: () => {
+        this.snackBarService.shoError('Sem permissão para executar');
+      },
+    });
+  }
 }

@@ -21,9 +21,9 @@ import { VaccineCreate } from '../../../models/vacinaModel/vacina';
 })
 export class VacinaDialogComponent implements OnInit {
   readonly data = inject(MAT_DIALOG_DATA);
-  public initialData: any = [];
-  public isEditMode: boolean = this.data.editMode;
-  public formConfig: FormField[] = [
+  initialData: any = [];
+  isEditMode: boolean = this.data.editMode;
+  formConfig: FormField[] = [
     {
       name: 'nome',
       label: 'Vacina',
@@ -43,7 +43,17 @@ export class VacinaDialogComponent implements OnInit {
 
   onFormSubmitted(formValue: VaccineCreate): void {
     if (this.isEditMode) {
-      this.vacinaService.uppdateVaccine();
+      this.vacinaService
+        .uppdateVaccine(this.initialData.id, formValue)
+        .subscribe({
+          complete: () => {
+            this.dialogRef.close();
+            this.snackBarService.showSucess('Sucesso');
+          },
+          error: () => {
+            this.snackBarService.shoError('Falha na operação');
+          },
+        });
     } else {
       this.vacinaService.createVaccine(formValue).subscribe({
         complete: () => {

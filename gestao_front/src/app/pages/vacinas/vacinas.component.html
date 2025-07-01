@@ -20,7 +20,7 @@
         matInput
         placeholder="Ex. João"
         #filterInput
-        (keyup)="handleFilterInput()"
+        (keyup)="handleFilterInput($event)"
       />
     </mat-form-field>
   </div>
@@ -30,9 +30,14 @@
   title="Informações sobre vacinas"
   subtitle="Use os icones para interagir com as linhas"
 >
-  <div class="pb-3 px-3 mt-2">
+  <div class="pb-3 px-3 mt-2 d-flex">
     <app-table-re-orderable-columns
-      [dataSource]="(inscricaoVacinas | async) || []"
+      [dataSource]="vacinasFiltradas()"
+      [filterValue]="filtro()"
+      [columnsToDisplay]="['nome', 'action']"
+      [columnHeaders]="{ nome: 'Nome', action: 'Ações' }"
+      (editElement)="editarVacina($event)"
+      (deleteElement)="deletarVacina($event.id)"
     >
     </app-table-re-orderable-columns>
   </div>

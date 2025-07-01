@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Vaccine, VaccineCreate } from '../../models/vacinaModel/vacina';
 import { environment } from '../../../enviroments/environment';
 
@@ -24,8 +24,38 @@ export class VacinaService {
   }
 
   createVaccine(vaccine: VaccineCreate) {
-    return this.http.post<Vaccine>(`${this.apiUrl}/vacinas`, vaccine);
+    return this.http.post<Vaccine>(`${this.apiUrl}/vacinas`, vaccine).pipe(
+      tap((novaVacina) => {
+        const listaAtual = this.vacinasSubject.value;
+        this.vacinasSubject.next([...listaAtual, novaVacina]);
+      })
+    );
   }
 
-  uppdateVaccine() {}
+  uppdateVaccine(id: string, data: Partial<Vaccine>): Observable<Vaccine> {
+    return this.http.patch<Vaccine>(`${this.apiUrl}/vacinas/${id}`, data).pipe(
+      tap((vacinaAtualizada) => {
+        const listaAtual = this.vacinasSubject.value;
+        const listaAtualziada = listaAtual.map((vacina) =>
+          vacina.id === id ? { ...vacina, ...vacinaAtualizada } : vacina
+        );
+        this.vacinasSubject.next(listaAtualziada);
+      })
+    );
+  }
+
+  delete(id: string) {
+    return this.http.delete<void>(`${this.apiUrl}/vacinas/${id}`).pipe(
+      tap(() => {
+        console.log('Antes:', this.vacinasSubject.value);
+        const novaLista = this.vacinasSubject.value.filter(
+          (voluntarioToDelete) => {
+            return voluntarioToDelete.id !== id;
+          }
+        );
+        console.log('Depois:', novaLista);
+        this.vacinasSubject.next(novaLista);
+      })
+    );
+  }
 }

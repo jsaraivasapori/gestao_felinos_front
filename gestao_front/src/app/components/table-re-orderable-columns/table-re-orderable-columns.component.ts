@@ -45,7 +45,7 @@ export class TableReOrderableColumnsComponent
   matDataSource = new MatTableDataSource<any>([]);
   @Input() filterValue: string = '';
   @Input()
-  dataSource!: any[] | Voluntario[];
+  dataSource!: any[];
   @Input() columnsToDisplay: string[] = [];
   @Input() columnHeaders: { [key: string]: string } = {};
   @Output() editElement = new EventEmitter<any>();

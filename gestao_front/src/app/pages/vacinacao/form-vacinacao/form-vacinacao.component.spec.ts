@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VacinaDialogComponent } from './vacina-dialog.component';
+import { FormVacinacaoComponent } from './form-vacinacao.component';
 
-describe('VacinaDialogComponent', () => {
-  let component: VacinaDialogComponent;
-  let fixture: ComponentFixture<VacinaDialogComponent>;
+describe('FormVacinacaoComponent', () => {
+  let component: FormVacinacaoComponent;
+  let fixture: ComponentFixture<FormVacinacaoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [VacinaDialogComponent]
+      imports: [FormVacinacaoComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(VacinaDialogComponent);
+    fixture = TestBed.createComponent(FormVacinacaoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

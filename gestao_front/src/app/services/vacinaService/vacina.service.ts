@@ -1,59 +1,69 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Vaccine, VaccineCreate } from '../../models/vacinaModel/vacina';
 import { environment } from '../../../enviroments/environment';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class VacinaService {
-  private apiUrl = `${environment.API_URL}`;
-
+  private apiUrl = environment.API_URL;
   private vacinasSubject = new BehaviorSubject<Vaccine[]>([]);
-  public vacina$ = this.vacinasSubject.asObservable();
+  public vacinas$ = this.vacinasSubject.asObservable();
+
   constructor(private http: HttpClient) {
     this.getVaccines();
   }
 
+  /** Carrega e ordena ao inicializar */
   getVaccines() {
-    return this.http.get<Vaccine[]>(`${this.apiUrl}/vacinas`).subscribe({
-      next: (dados) => this.vacinasSubject.next(dados),
-      error: (erro) => console.error('Erro ao carregar'),
+    this.http.get<Vaccine[]>(`${this.apiUrl}/vacinas`).subscribe({
+      next: (dados) => {
+        const ordenadas = [...dados].sort((a, b) =>
+          a.nome.localeCompare(b.nome, 'pt', { sensitivity: 'base' })
+        );
+        this.vacinasSubject.next(ordenadas);
+      },
+      error: (err) => console.error('Erro ao carregar', err),
     });
   }
 
-  createVaccine(vaccine: VaccineCreate) {
+  /** Cria e emite lista ordenada */
+  createVaccine(vaccine: VaccineCreate): Observable<Vaccine> {
     return this.http.post<Vaccine>(`${this.apiUrl}/vacinas`, vaccine).pipe(
       tap((novaVacina) => {
-        const listaAtual = this.vacinasSubject.value;
-        this.vacinasSubject.next([...listaAtual, novaVacina]);
+        const listaAtual = [...this.vacinasSubject.value, novaVacina];
+        const ordenadas = listaAtual.sort((a, b) =>
+          a.nome.localeCompare(b.nome, 'pt', { sensitivity: 'base' })
+        );
+        this.vacinasSubject.next(ordenadas);
       })
     );
   }
 
-  uppdateVaccine(id: string, data: Partial<Vaccine>): Observable<Vaccine> {
+  /** Atualiza e emite lista ordenada */
+  updateVaccine(id: string, data: Partial<Vaccine>): Observable<Vaccine> {
     return this.http.patch<Vaccine>(`${this.apiUrl}/vacinas/${id}`, data).pipe(
       tap((vacinaAtualizada) => {
-        const listaAtual = this.vacinasSubject.value;
-        const listaAtualziada = listaAtual.map((vacina) =>
+        const listaAtual = this.vacinasSubject.value.map((vacina) =>
           vacina.id === id ? { ...vacina, ...vacinaAtualizada } : vacina
         );
-        this.vacinasSubject.next(listaAtualziada);
+        const ordenadas = listaAtual.sort((a, b) =>
+          a.nome.localeCompare(b.nome, 'pt', { sensitivity: 'base' })
+        );
+        this.vacinasSubject.next(ordenadas);
       })
     );
   }
 
-  delete(id: string) {
+  /** Deleta e emite lista ordenada */
+  deleteVaccine(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/vacinas/${id}`).pipe(
       tap(() => {
-        console.log('Antes:', this.vacinasSubject.value);
-        const novaLista = this.vacinasSubject.value.filter(
-          (voluntarioToDelete) => {
-            return voluntarioToDelete.id !== id;
-          }
-        );
-        console.log('Depois:', novaLista);
+        const novaLista = this.vacinasSubject.value
+          .filter((vacina) => vacina.id !== id)
+          .sort((a, b) =>
+            a.nome.localeCompare(b.nome, 'pt', { sensitivity: 'base' })
+          );
         this.vacinasSubject.next(novaLista);
       })
     );

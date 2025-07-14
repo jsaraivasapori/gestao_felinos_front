@@ -2,12 +2,14 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { FelinosComponent } from './pages/felinos/felinos.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { VacinasComponent } from './pages/vacinas/vacinas.component';
 import { ProcedimentosComponent } from './pages/procedimentos/procedimentos.component';
 import { VoluntariosComponent } from './pages/voluntarios/voluntarios.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { FelinosFormComponent } from './pages/felinos/edit-felinos/felinos-form.component';
 import { VoluntariosFormComponent } from './pages/voluntarios/edit-voluntarios/voluntarios-form.component';
+import { VacinacaoComponent } from './pages/vacinacao/vacinacao.component';
+import { Component } from '@angular/core';
+import { FormVacinacaoComponent } from './pages/vacinacao/form-vacinacao/form-vacinacao.component';
 
 export const routes: Routes = [
   {
@@ -34,7 +36,11 @@ export const routes: Routes = [
       },
       {
         path: 'vacinas',
-        component: VacinasComponent,
+        component: VacinacaoComponent,
+      },
+      {
+        path: 'vacinacao',
+        component: FormVacinacaoComponent,
       },
       {
         path: 'procedimentos',

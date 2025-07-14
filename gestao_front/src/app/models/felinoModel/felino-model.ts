@@ -14,3 +14,8 @@ export interface FelinoCreate {
 export interface Felino extends FelinoCreate {
   id: string;
 }
+
+export interface FelinoInfoBasic {
+  id: string;
+  nome: string;
+}

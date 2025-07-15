@@ -8,11 +8,12 @@ import { VacinaService } from '../../../services/vacinaService/vacina.service';
 import { combineLatest, forkJoin, zip } from 'rxjs';
 import { FelinoInfoBasic } from '../../../models/felinoModel/felino-model';
 import { Vaccine } from '../../../models/vacinaModel/vacina';
+import { CardComponent } from '../../../components/card/card.component';
 
 @Component({
   selector: 'app-form-vacinacao',
   standalone: true,
-  imports: [DynamicFormComponent],
+  imports: [DynamicFormComponent, CardComponent],
   templateUrl: './form-vacinacao.component.html',
   styleUrl: './form-vacinacao.component.scss',
 })

@@ -1,0 +1,11 @@
+<div class="d-flex justify-content-center">
+  <div class="responsive-wrapper">
+    <app-card title="Aplicação de Vacina">
+      <app-dynamic-form
+        [formConfig]="formConfig"
+        (formSubmitted)="onFormSubmitted($event)"
+        (cancel)="onCancel()"
+      ></app-dynamic-form>
+    </app-card>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+.responsive-wrapper {
+  width: 100vw;
+}
+@media (min-width: 992px) {
+  .responsive-wrapper {
+    width: 65vw;
+  }
+}

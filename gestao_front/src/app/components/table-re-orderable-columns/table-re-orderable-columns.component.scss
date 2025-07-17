@@ -1,0 +1,22 @@
+table {
+  width: 100%;
+  th {
+    font-size: 18px;
+  }
+  tr {
+    font-size: 16px;
+  }
+}
+mat-icon {
+  margin-right: 10px;
+  &:hover {
+    color: var(--blue);
+  }
+}
+
+.row-focus {
+  &:hover {
+    background-color: var(--primary-color);
+    color: var(--blue);
+  }
+}

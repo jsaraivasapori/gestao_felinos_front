@@ -1,0 +1,13 @@
+<div class="container-fluid mt-4">
+  <app-card [title]="isEditMode ? 'Edição de Registro' : 'Novo Registro'">
+    <div content>
+      <app-dynamic-form
+        [formConfig]="formConfig"
+        [initialData]="initialData"
+        [submitLabel]="isEditMode ? 'Atualizar' : 'Adicionar'"
+        (formSubmitted)="onFormSubmitted($event)"
+        (cancel)="onCancel()"
+      >
+      </app-dynamic-form></div
+  ></app-card>
+</div>

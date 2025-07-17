@@ -3,7 +3,7 @@
     <!-- Linha para os campos normais: inputs (text, number), select e date mascarado -->
     <div class="row" *ngIf="getNonToggleAndNonTextareaFields().length > 0">
       <ng-container *ngFor="let field of getNonToggleAndNonTextareaFields()">
-        <div class="col-md-6 mb-3">
+        <div class="col-12 mb-3">
           <ng-container [ngSwitch]="field.type">
             <!-- Campo do tipo select -->
             <mat-form-field
@@ -34,9 +34,40 @@
               </mat-error>
             </mat-form-field>
 
-            <!-- Campo do tipo date com máscara (substituindo o datepicker) -->
+            <!-- DataPicker -->
             <mat-form-field
-              *ngSwitchCase="'dateMasked'"
+              *ngSwitchCase="'datePicker'"
+              appearance="fill"
+              style="width: 100%"
+            >
+              <mat-label>{{ field.label }}</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                [formControlName]="field.name"
+              />
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+
+              <mat-error
+                *ngIf="
+                  form.get(field.name)?.invalid &&
+                  (form.get(field.name)?.dirty || form.get(field.name)?.touched)
+                "
+              >
+                <ng-container *ngFor="let errKey of getErrorKeys(field)">
+                  <span *ngIf="form.get(field.name)?.hasError(errKey)">
+                    {{ field.errorMessages ? field.errorMessages[errKey] : "" }}
+                  </span>
+                </ng-container>
+              </mat-error>
+            </mat-form-field>
+            <!-- Campo do text S com máscara (substituindo o datepicker) -->
+            <mat-form-field
+              *ngSwitchCase="'texMasked'"
               appearance="fill"
               style="width: 100%"
             >
@@ -62,7 +93,7 @@
               </mat-error>
             </mat-form-field>
 
-            <!-- Campo padrão para outros inputs (tipo text, number, etc.) -->
+            <!-- Campo padrão para outros inputs (tipo text, number, email) -->
             <mat-form-field
               *ngSwitchDefault
               appearance="fill"
@@ -74,18 +105,24 @@
                 [formControlName]="field.name"
                 [type]="field.type"
               />
-              <mat-error
-                *ngIf="
-                  form.get(field.name)?.invalid &&
-                  (form.get(field.name)?.dirty || form.get(field.name)?.touched)
-                "
-              >
+              @if (form.get(field.name)?.invalid && (form.get(field.name)?.dirty
+              || form.get(field.name)?.touched)) {
+              <mat-error>
                 <ng-container *ngFor="let errKey of getErrorKeys(field)">
                   <span *ngIf="form.get(field.name)?.hasError(errKey)">
                     {{ field.errorMessages ? field.errorMessages[errKey] : "" }}
                   </span>
                 </ng-container>
               </mat-error>
+              }@else if (form.get(field.name)?.hasError('pattern')) {
+              <ng-container *ngFor="let errKey of getErrorKeys(field)">
+                <mat-error>
+                  <span>{{
+                    field.errorMessages ? field.errorMessages[errKey] : ""
+                  }}</span>
+                </mat-error>
+              </ng-container>
+              }
             </mat-form-field>
           </ng-container>
         </div>
@@ -141,10 +178,17 @@
       color="primary"
       type="submit"
       [disabled]="form.invalid || form.pristine"
+      class="m-2"
     >
       {{ submitLabel }}
     </button>
-    <button type="button" mat-flat-button color="warn" (click)="onCancel()">
+    <button
+      type="button"
+      class="m-2"
+      mat-flat-button
+      color="warn"
+      (click)="onCancel()"
+    >
       Cancelar
     </button>
   </div>

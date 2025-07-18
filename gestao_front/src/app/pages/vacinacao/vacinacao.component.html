@@ -1,1 +1,6 @@
-<button mat-raised-button (click)="aplicarNovaVacina()">Aplicar Vacina</button>
+<app-button
+  [buttonStyle]="'raised'"
+  [text]="'Vacinar'"
+  (clicked)="aplicarNovaVacina()"
+  style="--button-font-size: 24px"
+></app-button>

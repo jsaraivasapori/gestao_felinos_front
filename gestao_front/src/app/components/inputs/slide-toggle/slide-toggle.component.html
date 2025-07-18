@@ -3,8 +3,8 @@
     {{ label }}
   </mat-slide-toggle>
 
-  @if (control.invalid && (control.dirty || control.touched)) { @switch {3
-  @case(control.hasError('required') || control.hasError('requiredTrue')) {
-  <mat-error class="mat-body-small"> Campo obrigatório </mat-error>
-  } } }
+  @if (control.invalid && (control.dirty || control.touched)) { @if
+  (control.hasError('requiredTrue')) {
+  <mat-error class="mat-body-small">Este campo é obrigatório.</mat-error>
+  } }
 </div>

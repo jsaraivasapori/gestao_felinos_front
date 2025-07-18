@@ -1,12 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-slide-toggle',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatSlideToggleModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatSlideToggleModule,
+    MatFormFieldModule,
+  ],
   templateUrl: './slide-toggle.component.html',
   styleUrl: './slide-toggle.component.scss',
 })

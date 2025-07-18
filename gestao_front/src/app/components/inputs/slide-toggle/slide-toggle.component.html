@@ -1,0 +1,10 @@
+<div class="d-flex flex-column">
+  <mat-slide-toggle [formControl]="control" [color]="color">
+    {{ label }}
+  </mat-slide-toggle>
+
+  @if (control.invalid && (control.dirty || control.touched)) { @switch {3
+  @case(control.hasError('required') || control.hasError('requiredTrue')) {
+  <mat-error class="mat-body-small"> Campo obrigatório </mat-error>
+  } } }
+</div>

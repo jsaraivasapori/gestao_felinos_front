@@ -1,0 +1,74 @@
+<ng-template #buttonContent>
+  @if (loading) {
+  <mat-progress-spinner
+    mode="indeterminate"
+    diameter="24"
+  ></mat-progress-spinner>
+  } @else { @if (icon) {
+  <mat-icon>{{ icon }}</mat-icon>
+  } @if(text) {
+  <span>{{ text }}</span>
+  } }
+</ng-template>
+
+@switch (buttonStyle) { @case ('raised') {
+<button
+  mat-raised-button
+  [color]="color"
+  [type]="type"
+  [disabled]="disabled || loading"
+  (click)="onClick()"
+>
+  <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+</button>
+} @case ('stroked') {
+<button
+  mat-stroked-button
+  [color]="color"
+  [type]="type"
+  [disabled]="disabled || loading"
+  (click)="onClick()"
+>
+  <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+</button>
+} @case ('flat') {
+<button
+  mat-flat-button
+  [color]="color"
+  [type]="type"
+  [disabled]="disabled || loading"
+  (click)="onClick()"
+>
+  <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+</button>
+} @case ('icon') {
+<button
+  mat-icon-button
+  [color]="color"
+  [type]="type"
+  [disabled]="disabled || loading"
+  (click)="onClick()"
+>
+  <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+</button>
+} @case ('fab') {
+<button
+  mat-fab
+  [color]="color"
+  [type]="type"
+  [disabled]="disabled || loading"
+  (click)="onClick()"
+>
+  <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+</button>
+} @case ('mini-fab') {
+<button
+  mat-mini-fab
+  [color]="color"
+  [type]="type"
+  [disabled]="disabled || loading"
+  (click)="onClick()"
+>
+  <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+</button>
+} }

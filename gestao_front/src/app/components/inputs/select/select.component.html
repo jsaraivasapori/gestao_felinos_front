@@ -1,0 +1,19 @@
+<mat-form-field class="w-100" appearance="outline">
+  <mat-label>{{ label }}</mat-label>
+
+  <mat-select [formControl]="control" [placeholder]="placeholder">
+    @for (option of options; track option[optionValue]) {
+    <mat-option [value]="option[optionValue]">
+      {{ option[optionText] }}
+    </mat-option>
+    }
+  </mat-select>
+
+  @if (control.invalid && (control.dirty || control.touched)) {
+  <mat-error>
+    @if (control.hasError('required')) {
+    <span>Este campo é obrigatório.</span>
+    }
+  </mat-error>
+  }
+</mat-form-field>

@@ -4,9 +4,9 @@
     mode="indeterminate"
     diameter="24"
   ></mat-progress-spinner>
-  } @else { @if (icon) {
+  } @else { @if (buttonStyle === 'icon') { @if (icon) {
   <mat-icon>{{ icon }}</mat-icon>
-  } @if(text) {
+  } } @else {
   <span>{{ text }}</span>
   } }
 </ng-template>

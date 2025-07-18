@@ -1,0 +1,50 @@
+// Este arquivo define os estilos para o componente de botão.
+//
+// Utiliza variáveis CSS para permitir fácil customização do botão a partir de fora do componente.
+// Os estilos garantem que o botão tenha tamanho, padding e altura configuráveis,
+// além de centralizar o texto verticalmente.
+//
+// Estrutura:
+// - :host: Define variáveis CSS padrão e configura o display do componente.
+// - button: Aplica as variáveis CSS ao elemento <button> real.
+//
+// Variáveis CSS disponíveis para customização:
+// --button-font-size: Tamanho da fonte do botão (padrão: 14px)
+// --button-padding: Espaçamento interno do botão (padrão: 0 16px)
+// --button-height: Altura do botão (padrão: 40px)
+//
+// Como sobrescrever as variáveis deste componente ao utilizá-lo em um componente pai:
+// Basta definir as variáveis CSS desejadas no seletor do componente pai que contém o botão,
+// por exemplo:
+//
+// .meu-componente-pai ::ng-deep gestao-button {
+//   --button-font-size: 18px;
+//   --button-padding: 8px 24px;
+//   --button-height: 48px;
+// }
+//
+// Dessa forma, os valores definidos no pai serão aplicados ao botão.
+//
+// Também é possível sobrescrever as variáveis usando o atributo style inline diretamente no componente:
+// <gestao-button style="--button-font-size: 20px; --button-padding: 12px 32px; --button-height: 56px;"></gestao-button>
+// O style inline tem prioridade sobre os estilos definidos no CSS do componente pai.
+
+:host {
+  // Variáveis CSS padrão
+  --button-font-size: 14px;
+  --button-padding: 0 16px;
+  --button-height: 40px;
+  display: block;
+}
+
+// Aqui, pegamos o botão real renderizado dentro do nosso componente
+// e aplicamos os valores das nossas variáveis a ele.
+button {
+  // A função var() usa o valor da nossa variável.
+  font-size: var(--button-font-size) !important;
+  padding: var(--button-padding) !important;
+  height: var(--button-height) !important;
+
+  // Truque para centralizar o texto verticalmente em um botão de altura fixa
+  line-height: calc(var(--button-height) - 2px) !important;
+}

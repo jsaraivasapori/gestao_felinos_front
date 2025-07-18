@@ -1,11 +1,15 @@
 <div class="d-flex justify-content-center">
   <div class="responsive-wrapper">
     <app-card title="Aplicação de Vacina">
-      <app-dynamic-form
-        [formConfig]="formConfig"
-        (formSubmitted)="onFormSubmitted($event)"
-        (cancel)="onCancel()"
-      ></app-dynamic-form>
+      <form [formGroup]="vacinacaoForm">
+        <app-basic-input
+          [control]="felino"
+          label="Felino"
+          placeholder="Nome do Felino"
+          type="text"
+        >
+        </app-basic-input>
+      </form>
     </app-card>
   </div>
 </div>

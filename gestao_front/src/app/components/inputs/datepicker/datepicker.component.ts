@@ -47,6 +47,7 @@ import { MatInputModule } from '@angular/material/input';
 export class DatepickerComponent {
   @Input({ required: true }) control!: FormControl;
   @Input() label: string = '';
+  @Input() apperence: 'fill' | 'outline' = 'fill';
   @Input() placeholder: string = 'Selecione uma data';
   @Input() minDate: Date | null = null;
   @Input() maxDate: Date | null = null;

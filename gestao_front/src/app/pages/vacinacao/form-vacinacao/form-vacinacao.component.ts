@@ -49,16 +49,21 @@ export class FormVacinacaoComponent implements OnInit {
 
   // formConfig: FormField[] = [];
   vacinacaoForm!: FormGroup;
+  felinos: FelinoInfoBasic[] = [];
+  vacinas: Vaccine[] = [];
+
   ngOnInit(): void {
-    // combineLatest([
-    //   this.felinoService.felinoOnlyNameAndId$,
-    //   this.vacinaService.vacinas$,
-    // ]).subscribe({
-    //   next: ([felinos, vacinas]) => {
-    //     this.formConfig = this.buildForm(felinos, vacinas);
-    //   },
-    //   error: (err) => console.error(err),
-    // });
+    combineLatest([
+      this.felinoService.felinoOnlyNameAndId$,
+      this.vacinaService.vacinas$,
+    ]).subscribe({
+      next: ([felinos, vacinas]) => {
+        this.felinos = felinos;
+        this.vacinas = vacinas;
+      },
+      error: (err) => console.error(err),
+    });
+
     this.vacinacaoForm = this.fb.group({
       felino: ['', Validators.required],
       vacina: ['', Validators.required],
@@ -75,6 +80,7 @@ export class FormVacinacaoComponent implements OnInit {
     });
   }
 
+  /** Getter para usar no [control] dos inputs */
   get felino() {
     return this.vacinacaoForm.get('felino') as FormControl;
   }

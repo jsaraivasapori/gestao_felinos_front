@@ -1,15 +1,67 @@
 <div class="d-flex justify-content-center">
   <div class="responsive-wrapper">
-    <app-card title="Aplicação de Vacina">
-      <form [formGroup]="vacinacaoForm">
-        <app-basic-input
-          [control]="felino"
-          label="Felino"
-          placeholder="Nome do Felino"
-          type="text"
-        >
-        </app-basic-input>
-      </form>
-    </app-card>
+    <form [formGroup]="vacinacaoForm">
+      <fieldset class="position-relative border border-lihgt p-3 mb-5">
+        <legend class="position-absolute top-0 start-0 translate-middle-y mx-2">
+          Identificação
+        </legend>
+        <div class="row">
+          <app-select
+            class="col-12 mt-2"
+            [control]="felino"
+            [options]="felinos"
+            label="Felino"
+            optionValue="id"
+            optionText="nome"
+          ></app-select>
+        </div>
+        <div class="row">
+          <app-select
+            class="col-6"
+            [control]="vacina"
+            [options]="vacinas"
+            label="Vacina"
+            optionValue="id"
+            optionText="nome"
+          ></app-select>
+
+          <app-basic-input
+            class="col-6"
+            [control]="lote"
+            label="Lote"
+            placeholder="Lote da Vacina"
+            type="text"
+          >
+          </app-basic-input>
+        </div>
+      </fieldset>
+      <fieldset class="position-relative border border-lihgt p-3">
+        <legend class="position-absolute top-0 start-0 translate-middle-y mx-2">
+          Detalhes da Aplicação
+        </legend>
+        <div class="row my-2">
+          <app-basic-input
+            class="col-6"
+            [control]="medVet"
+            label="Ex. Dr Paulo"
+            placeholder="Médico (a) Veterinário (a)"
+            type="text"
+          >
+          </app-basic-input>
+          <app-basic-input
+            class="col-6"
+            [control]="valorPago"
+            label="Valor da Vacina"
+            placeholder="Ex. R$ 50.99"
+            type="text"
+          >
+          </app-basic-input>
+        </div>
+        <div class="row">
+          é reforço?
+          <app-slide-toggle [control]="requerReforcoAnual"></app-slide-toggle>
+        </div>
+      </fieldset>
+    </form>
   </div>
 </div>

@@ -21,6 +21,16 @@
 >
   <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
 </button>
+}@case ('basic') {
+<button
+  mat-button
+  [color]="color"
+  [type]="type"
+  [disabled]="disabled"
+  (click)="onClick()"
+>
+  <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+</button>
 } @case ('stroked') {
 <button
   mat-stroked-button

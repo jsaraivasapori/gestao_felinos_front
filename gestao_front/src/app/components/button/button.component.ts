@@ -5,7 +5,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // Definindo os tipos de estilo de botão para melhor type safety
-type ButtonStyle = 'raised' | 'stroked' | 'flat' | 'icon' | 'fab' | 'mini-fab';
+type ButtonStyle =
+  | 'raised'
+  | 'stroked'
+  | 'flat'
+  | 'icon'
+  | 'fab'
+  | 'mini-fab'
+  | 'basic';
 type ButtonColor = 'primary' | 'accent' | 'warn' | undefined;
 
 @Component({

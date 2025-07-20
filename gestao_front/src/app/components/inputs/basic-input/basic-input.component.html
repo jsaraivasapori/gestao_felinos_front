@@ -26,6 +26,8 @@
       O valor deve ter no máximo
       {{ control.errors?.['maxlength'].requiredLength }} caracteres.
     </span>
+    } @else if (control.hasError('pattern')) {
+    <span>O valor pe inválido.</span>
     }
   </mat-error>
   }

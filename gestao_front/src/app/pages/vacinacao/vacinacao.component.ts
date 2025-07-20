@@ -1,11 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent } from '../../components/button/button.component';
+import { CardComponent } from '../../components/card/card.component';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-vacinacao',
   standalone: true,
-  imports: [ButtonComponent],
+  imports: [ButtonComponent, CardComponent, MatIcon],
   templateUrl: './vacinacao.component.html',
   styleUrl: './vacinacao.component.scss',
 })

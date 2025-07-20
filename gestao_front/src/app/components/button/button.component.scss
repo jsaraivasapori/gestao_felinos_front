@@ -34,6 +34,7 @@
   --button-font-size: 14px;
   --button-padding: 0 16px;
   --button-height: 40px;
+  --button-font-weight: 500
   display: block;
 }
 
@@ -44,7 +45,26 @@ button {
   font-size: var(--button-font-size) !important;
   padding: var(--button-padding) !important;
   height: var(--button-height) !important;
+  font-weight: var(--button-font-weight) !important;
 
   // Truque para centralizar o texto verticalmente em um botão de altura fixa
   line-height: calc(var(--button-height) - 2px) !important;
+}
+
+.button-content-wrapper {
+  // Transforma o container em um layout flexível.
+  // 'inline-flex' permite que o botão mantenha seu tamanho natural baseado no conteúdo.
+  display: inline-flex;
+
+  // ESTA É A PROPRIEDADE MÁGICA:
+  // Alinha todos os itens (ícone e texto) verticalmente ao centro.
+  align-items: center;
+
+  // Centraliza o conteúdo horizontalmente. É útil para o estado de 'loading'
+  // e para o estilo 'icon' onde há apenas um ícone.
+  justify-content: center;
+
+  // Adiciona um espaçamento de 8px entre os itens (entre o ícone e o texto).
+  // É mais moderno e limpo que usar 'margin'.
+  gap: 8px;
 }

@@ -1,10 +1,13 @@
 <div class="d-flex justify-content-center">
   <div class="responsive-wrapper">
+    <h4 class="fw-bold mb-4">Aplicação de Vacina</h4>
     <form [formGroup]="vacinacaoForm">
       <fieldset class="position-relative border border-lihgt p-3 mb-5">
-        <legend class="position-absolute top-0 start-0 translate-middle-y mx-2">
+        <div
+          class="position-absolute top-0 start-0 translate-middle-y mx-2 bg-light fs-4"
+        >
           Identificação
-        </legend>
+        </div>
         <div class="row">
           <app-select
             class="col-12 mt-2"
@@ -17,7 +20,7 @@
         </div>
         <div class="row">
           <app-select
-            class="col-6"
+            class="col-sm-6 col-12"
             [control]="vacina"
             [options]="vacinas"
             label="Vacina"
@@ -26,7 +29,7 @@
           ></app-select>
 
           <app-basic-input
-            class="col-6"
+            class="col-sm-6 col-12"
             [control]="lote"
             label="Lote"
             placeholder="Lote da Vacina"
@@ -35,13 +38,15 @@
           </app-basic-input>
         </div>
       </fieldset>
-      <fieldset class="position-relative border border-lihgt p-3">
-        <legend class="position-absolute top-0 start-0 translate-middle-y mx-2">
+      <fieldset class="position-relative border border-lihgt p-3 mb-5">
+        <div
+          class="position-absolute top-0 start-0 translate-middle-y mx-2 bg-light fs-4"
+        >
           Detalhes da Aplicação
-        </legend>
+        </div>
         <div class="row my-2">
           <app-basic-input
-            class="col-6"
+            class="col-sm-6 col-12"
             [control]="medVet"
             label="Ex. Dr Paulo"
             placeholder="Médico (a) Veterinário (a)"
@@ -49,7 +54,7 @@
           >
           </app-basic-input>
           <app-basic-input
-            class="col-6"
+            class="col-sm-6 col-12"
             [control]="valorPago"
             label="Valor da Vacina"
             placeholder="Ex. R$ 50.99"
@@ -58,10 +63,58 @@
           </app-basic-input>
         </div>
         <div class="row">
-          é reforço?
-          <app-slide-toggle [control]="requerReforcoAnual"></app-slide-toggle>
+          <div
+            class="col-6 d-flex align-items-center justify-content-start width-max-content"
+          >
+            <app-slide-toggle [control]="requerReforcoAnual"></app-slide-toggle>
+            <span class="text-nowrap mx-2 mx-lg-4"> É reforço anual?</span>
+          </div>
         </div>
       </fieldset>
+
+      <fieldset class="position-relative border border-lihgt p-3">
+        <div
+          class="position-absolute top-0 start-0 translate-middle-y mx-2 bg-light fs-4"
+        >
+          Data da Aplicação
+        </div>
+        <div class="row my-2">
+          <app-basic-input
+            class="col-sm-4 col-12"
+            [control]="dosesNecessarias"
+            label="Doses necessárias"
+            placeholder="Ex. 2"
+            type="number"
+          >
+          </app-basic-input>
+          <app-basic-input
+            class="col-sm-4 col-12"
+            [control]="intervaloEntreDosesEmDias"
+            label="Intervalo entre doses"
+            placeholder="Ex. 01/01/2024"
+            type="number"
+          >
+          </app-basic-input>
+          <app-datepicker
+            [control]="dataProximaVacina"
+            label="Data da Próxima Vacina"
+            class="col-12 col-sm-4"
+          ></app-datepicker>
+        </div>
+      </fieldset>
+      <div class="d-flex justify-content-sm-end gap-4 mt-4">
+        <app-button
+          (clicked)="onCancel()"
+          text="Cancelar"
+          buttonStyle="raised"
+          color="warn"
+        ></app-button>
+        <app-button
+          (clicked)="onFormSubmitted()"
+          text="Salvar Aplicação"
+          buttonStyle="flat"
+        ></app-button>
+      </div>
     </form>
   </div>
 </div>

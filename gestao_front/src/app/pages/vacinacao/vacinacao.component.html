@@ -1,74 +1,87 @@
-<div class="d-flex flex-sm-row flex-column justify-content-sm-between">
-  <div class="">
+<div class="d-flex flex-lg-row flex-column justify-content-sm-between">
+  <div>
     <h1 class="titulo">Gerenciamento de Vacinas</h1>
-    <p class="">Visualize, filtre e gerencie todas as aplicações de vacinas</p>
+    <p>Visualize, filtre e gerencie todas as aplicações de vacinas</p>
   </div>
   <app-button
     [buttonStyle]="'raised'"
     [text]="'Aplicar Vacina'"
-    icon="add_circle  "
+    icon="add_circle"
     (clicked)="aplicarNovaVacina()"
-    style="--button-font-size: 20px; --button-font-weight: 500"
+    style="
+      --button-font-size: 20px;
+      --button-font-weight: 500;
+      white-space: nowrap;
+      --button-padding: 5px 5px;
+    "
     class="mt-3"
   ></app-button>
 </div>
-<div class="row mt-5 g-5">
-  <div class="col-sm-4 col-12">
+
+<div class="row mt-md-4 mt-3 g-4">
+  <!-- Card 1 -->
+  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
     <app-card>
-      <div class="d-flex flex-row pb-2">
-        <div class="circle-blue mx-4">
+      <div class="d-flex flex-row align-items-center pb-2">
+        <div class="circle-blue mx-4 flex-shrink-0">
           <mat-icon style="color: #2854c5" class="animation"
             >check_circle</mat-icon
           >
         </div>
-        <div class="d-flex flex-column">
-          <span class="card-title">Total Aplicado</span>
-          <span class="card-value"> 128</span>
+        <div class="d-flex flex-column text-container">
+          <span class="card-title">Aplicado</span>
+          <span class="card-value">128</span>
         </div>
       </div>
     </app-card>
   </div>
-  <div class="col-sm-4 col-12">
+
+  <!-- Card 2 -->
+  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
     <app-card>
-      <div class="d-flex flex-row pb-2">
-        <div class="circle-yelow mx-4">
+      <div class="d-flex flex-row align-items-center pb-2">
+        <div class="circle-yelow mx-4 flex-shrink-0">
           <mat-icon style="color: #a96424" class="animation">event</mat-icon>
         </div>
-        <div class="d-flex flex-column">
-          <span class="card-title">Total Aplicado</span>
-          <span class="card-value"> 128</span>
+        <div class="d-flex flex-column text-container">
+          <span class="card-title">Agendado</span>
+          <span class="card-value"> 54</span>
         </div>
       </div>
     </app-card>
   </div>
-</div>
-<div class="row g-5">
-  <div class="col-sm-4 col-12">
+
+  <!-- Card 3 -->
+  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
     <app-card>
-      <div class="d-flex flex-row pb-2">
-        <div class="circle-red mx-4">
+      <div class="d-flex flex-row align-items-center pb-2">
+        <div class="circle-red mx-4 flex-shrink-0">
           <mat-icon style="color: #ff0000" class="animation"
             >assignment_late</mat-icon
           >
         </div>
-        <div class="d-flex flex-column">
-          <span class="card-title">Total Aplicado</span>
-          <span class="card-value"> 128</span>
+        <div class="d-flex flex-column text-container">
+          <span class="card-title">Pendentes</span>
+          <span class="card-value"> 12</span>
         </div>
       </div>
     </app-card>
   </div>
-  <div class="col-sm-4 col-12">
+
+  <!-- Card 4 -->
+  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
     <app-card>
-      <div class="d-flex flex-row pb-2">
-        <div class="circle-gren mx-4">
+      <div class="d-flex flex-row align-items-center pb-2">
+        <div class="circle-gren mx-4 flex-shrink-0">
           <mat-icon style="color: #0c620c" class="animation">beenhere</mat-icon>
         </div>
-        <div class="d-flex flex-column">
-          <span class="card-title">Total Aplicado</span>
-          <span class="card-value"> 128</span>
+        <div class="d-flex flex-column text-container">
+          <span class="card-title">Confirmados</span>
+          <span class="card-value"> 62</span>
         </div>
       </div>
     </app-card>
   </div>
 </div>
+
+<app-table-re-orderable-columns></app-table-re-orderable-columns>

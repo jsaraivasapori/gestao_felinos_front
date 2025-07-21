@@ -19,41 +19,26 @@
 .animation {
   animation: pulsar 1.2s infinite ease-in-out;
 }
-.circle-blue {
-  background-color: #aac1f0;
+.circle {
   border-radius: 50%;
+  aspect-ratio: 1 / 1;
   width: 50px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.circle-yelow {
-  background-color: #f9db78;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.circle-red {
-  background-color: #ffe5e5;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.circle-gren {
-  background-color: #90ee90;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  .circle-blue {
+    background-color: #aac1f0;
+  }
+  .circle-yelow {
+    background-color: #f9db78;
+  }
+  .circle-red {
+    background-color: #ffe5e5;
+  }
+  .circle-gren {
+    background-color: #90ee90;
+  }
 }
 .card-title {
   font-weight: 400;

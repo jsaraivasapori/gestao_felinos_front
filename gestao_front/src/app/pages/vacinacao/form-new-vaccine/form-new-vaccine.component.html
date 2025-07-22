@@ -1,0 +1,29 @@
+<div class="h-100">
+  <mat-dialog-content>
+    <h4 mat-dialog-title class="">Cadastrar Vacina</h4>
+    <form [formGroup]="vacinaForm">
+      <app-basic-input
+        [control]="nome"
+        label="Nome"
+        placeholder="Vacina Y..."
+        class="mb-5"
+      >
+      </app-basic-input>
+      <div>
+        <mat-dialog-actions align="end" class="mt-5 ms-4">
+          <app-button
+            buttonStyle="flat"
+            text="Salvar"
+            class="me-2"
+          ></app-button>
+          <app-button
+            buttonStyle="stroked"
+            color="warn"
+            text="Cancelar"
+            (clicked)="onCancel()"
+          ></app-button>
+        </mat-dialog-actions>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

@@ -10,7 +10,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 import { ButtonComponent } from '../../components/button/button.component';
 import { CardComponent } from '../../components/card/card.component';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { TableReOrderableColumnsComponent } from '../../components/table-re-orderable-columns/table-re-orderable-columns.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
@@ -20,7 +20,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { FormNewVaccineComponent } from './form-new-vaccine/form-new-vaccine.component';
 
 @Component({
   selector: 'app-vacinacao',
@@ -37,7 +38,6 @@ import { MatButtonModule } from '@angular/material/button';
     MatDividerModule,
     MatCardModule,
     MatIconModule,
-    MatButtonModule,
   ],
   templateUrl: './vacinacao.component.html',
   styleUrl: './vacinacao.component.scss',
@@ -46,6 +46,7 @@ export class VacinacaoComponent {
   router = inject(Router);
   private breakpointObserver = inject(BreakpointObserver);
   activedRoute = inject(ActivatedRoute);
+  readonly dialog = inject(MatDialog);
   // --- LÓGICA DE RESPONSIVIDADE ---
   private isHandset$ = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -147,7 +148,7 @@ export class VacinacaoComponent {
   }
 
   aplicarNovaVacina() {
-    console.log('Abrindo dialog para nova aplicação de vacina...');
+    this.router.navigate(['home/vacinacao']);
   }
 
   onEdit(element: any) {
@@ -156,5 +157,12 @@ export class VacinacaoComponent {
 
   onDelete(element: any) {
     console.log('Deletar aplicação:', element);
+  }
+  openDialogCadastrarVacina(): void {
+    const dialogRef = this.dialog.open(FormNewVaccineComponent, {
+      width: '300px',
+      height: '300px',
+      disableClose: true,
+    });
   }
 }

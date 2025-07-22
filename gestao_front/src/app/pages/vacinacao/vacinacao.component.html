@@ -1,21 +1,31 @@
 <!-- Cabeçalho da Página -->
-<div
-  class="d-flex flex-lg-row flex-column justify-content-between align-items-center"
->
-  <div>
+
+<div class="row">
+  <div class="col-12 col-sm-12 col-lg-6">
     <h1 class="titulo">Gerenciamento de Vacinas</h1>
     <p class="subtitulo">
       Visualize, filtre e gerencie todas as aplicações de vacinas
     </p>
   </div>
-  <app-button
-    buttonStyle="raised"
-    text="Aplicar Vacina"
-    icon="add_circle"
-    (clicked)="aplicarNovaVacina()"
-    style="--button-height: 48px; --button-font-size: 16px"
-    class="mt-3 mt-lg-0"
-  ></app-button>
+
+  <div class="col-12 col-sm-12 col-lg-6">
+    <div class="d-flex justify-content-lg-end">
+      <app-button
+        buttonStyle="flat"
+        text="Aplicar Vacina"
+        icon="add_circle"
+        (clicked)="aplicarNovaVacina()"
+        style="--button-font-size: 16px"
+        class="me-lg-2"
+      ></app-button>
+      <app-button
+        buttonStyle="stroked"
+        icon="vaccines"
+        (clicked)="openDialogCadastrarVacina()"
+        text="Cadastrar  Vacina"
+      ></app-button>
+    </div>
+  </div>
 </div>
 
 <!-- Cards de Resumo (KPIs) -->
@@ -119,22 +129,12 @@
         </mat-card-content>
         <mat-divider></mat-divider>
         <mat-card-actions align="end">
-          <button
-            mat-icon-button
-            color="primary"
-            (click)="onEdit(item)"
-            aria-label="Editar"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            mat-icon-button
+          <app-button buttonStyle="icon" icon="edit"></app-button>
+          <app-button
+            buttonStyle="icon"
+            icon="delete"
             color="warn"
-            (click)="onDelete(item)"
-            aria-label="Deletar"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
+          ></app-button>
         </mat-card-actions>
       </mat-card>
     </div>

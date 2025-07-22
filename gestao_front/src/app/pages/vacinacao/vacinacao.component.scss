@@ -140,6 +140,6 @@
 }
 
 // Garante que os botões de ação nos cards mobile tenham um bom espaçamento
-mat-card-actions button[mat-icon-button] {
+mat-card-actions app-button[buttonStyle="icon"] {
   margin-left: 8px;
 }

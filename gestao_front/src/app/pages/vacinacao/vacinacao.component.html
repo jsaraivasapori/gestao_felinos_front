@@ -1,26 +1,27 @@
-<div class="d-flex flex-lg-row flex-column justify-content-sm-between">
+<!-- Cabeçalho da Página -->
+<div
+  class="d-flex flex-lg-row flex-column justify-content-between align-items-center"
+>
   <div>
     <h1 class="titulo">Gerenciamento de Vacinas</h1>
-    <p>Visualize, filtre e gerencie todas as aplicações de vacinas</p>
+    <p class="subtitulo">
+      Visualize, filtre e gerencie todas as aplicações de vacinas
+    </p>
   </div>
   <app-button
-    [buttonStyle]="'raised'"
-    [text]="'Aplicar Vacina'"
+    buttonStyle="raised"
+    text="Aplicar Vacina"
     icon="add_circle"
     (clicked)="aplicarNovaVacina()"
-    style="
-      --button-font-size: 20px;
-      --button-font-weight: 500;
-      white-space: nowrap;
-      --button-padding: 5px 5px;
-    "
-    class="mt-3"
+    style="--button-height: 48px; --button-font-size: 16px"
+    class="mt-3 mt-lg-0"
   ></app-button>
 </div>
 
+<!-- Cards de Resumo (KPIs) -->
 <div class="row mt-md-4 mt-3 g-4">
   <!-- Card 1 -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+  <div class="col-12 col-sm-6 col-lg-3">
     <app-card>
       <div class="d-flex flex-row align-items-center pb-2">
         <div class="circle-blue mx-4 flex-shrink-0">
@@ -35,9 +36,8 @@
       </div>
     </app-card>
   </div>
-
   <!-- Card 2 -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+  <div class="col-12 col-sm-6 col-lg-3">
     <app-card>
       <div class="d-flex flex-row align-items-center pb-2">
         <div class="circle-yelow mx-4 flex-shrink-0">
@@ -50,9 +50,8 @@
       </div>
     </app-card>
   </div>
-
   <!-- Card 3 -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+  <div class="col-12 col-sm-6 col-lg-3">
     <app-card>
       <div class="d-flex flex-row align-items-center pb-2">
         <div class="circle-red mx-4 flex-shrink-0">
@@ -67,9 +66,8 @@
       </div>
     </app-card>
   </div>
-
   <!-- Card 4 -->
-  <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+  <div class="col-12 col-sm-6 col-lg-3">
     <app-card>
       <div class="d-flex flex-row align-items-center pb-2">
         <div class="circle-gren mx-4 flex-shrink-0">
@@ -84,4 +82,89 @@
   </div>
 </div>
 
-<app-table-re-orderable-columns></app-table-re-orderable-columns>
+<!-- Seção da Tabela/Cards Responsivos -->
+<div class="mt-4 border border-lihgt p-3">
+  @if(isMobile()){
+  <h5>Lista de Aplicação</h5>
+  <p>Utilize o filtro para maior agilidade</p>
+  }
+  <!-- Campo de Filtro -->
+  <mat-form-field appearance="outline" class="w-100 mt-2">
+    <mat-label>Buscar aplicação...</mat-label>
+    <input
+      matInput
+      (keyup)="handleFilter($event)"
+      placeholder="Ex: Simba, V5 Felina, etc."
+    />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <!-- LÓGICA DE RENDERIZAÇÃO CONDICIONAL -->
+  @if (isMobile()) {
+  <!-- Início: Estrutura dos Cards para Mobile -->
+  <div class="row g-3">
+    @for (item of pagedCardData(); track item.felino) {
+    <div class="col-12">
+      <mat-card [ngClass]="'status-' + item.status.toLowerCase()">
+        <mat-card-header>
+          <mat-card-title>{{ item.felino }}</mat-card-title>
+          <mat-card-subtitle>{{ item.vacina }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Data:</strong> {{ item.dataAplicacao }}</p>
+          <p>
+            <strong>Status:</strong>
+            <span class="status-text">{{ item.status }}</span>
+          </p>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-card-actions align="end">
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="onEdit(item)"
+            aria-label="Editar"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="onDelete(item)"
+            aria-label="Deletar"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    } @empty {
+    <p class="text-center w-100 mt-3">Nenhum registro encontrado.</p>
+    }
+  </div>
+
+  <mat-paginator
+    class="mt-3"
+    [length]="filteredDataSource().length"
+    [pageSize]="pageSize"
+    [pageIndex]="currentPage()"
+    (page)="onPageChange($event)"
+    showFirstLastButtons
+    aria-label="Selecionar página"
+  >
+  </mat-paginator>
+  <!-- Fim: Estrutura dos Cards -->
+
+  } @else {
+  <!-- Visualização de Tabela para Desktop -->
+  <app-table-re-orderable-columns
+    [dataSource]="dataSource()"
+    [columnsToDisplay]="columnsToDisplay"
+    [columnHeaders]="columnHeaders"
+    [filterValue]="filterValue()"
+    (editElement)="onEdit($event)"
+    (deleteElement)="onDelete($event)"
+  >
+  </app-table-re-orderable-columns>
+  }
+</div>

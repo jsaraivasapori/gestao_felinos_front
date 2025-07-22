@@ -48,3 +48,98 @@
   font-weight: 600;
   font-size: 18px;
 }
+// ===================================
+// Estilos Gerais da Página
+// ===================================
+
+.titulo {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.subtitulo {
+  color: #6c757d; // Cinza sutil para o subtítulo
+}
+
+// ===================================
+// Estilos para os Cards de Resumo (KPIs)
+// ===================================
+
+.text-container {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-title {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.card-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #212529;
+}
+
+.circle-blue,
+.circle-yelow,
+.circle-red,
+.circle-gren {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; // Impede que o círculo encolha
+}
+
+.circle-blue {
+  background-color: #eaf0ff;
+}
+.circle-yelow {
+  background-color: #fff4e5;
+}
+.circle-red {
+  background-color: #ffeaea;
+}
+.circle-gren {
+  background-color: #e6f4e6;
+}
+
+// =========================================================
+// Estilos para os Cards da Lista (Visualização Mobile)
+// =========================================================
+
+// Cada classe de status adiciona uma borda colorida à esquerda do card
+.status-aplicado {
+  border-left: 5px solid #2854c5; // Azul
+}
+
+.status-agendado {
+  border-left: 5px solid #a96424; // Amarelo/Laranja
+}
+
+.status-pendente {
+  border-left: 5px solid #ff0000; // Vermelho
+}
+
+.status-confirmado {
+  border-left: 5px solid #0c620c; // Verde
+}
+
+// Estilo para o texto do status dentro do card
+.status-text {
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background-color: #f0f0f0;
+  font-size: 0.8rem;
+  display: inline-block;
+}
+
+// Garante que os botões de ação nos cards mobile tenham um bom espaçamento
+mat-card-actions button[mat-icon-button] {
+  margin-left: 8px;
+}

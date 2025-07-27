@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Vaccine, VaccineCreate } from '../../models/vacinaModel/vacina';
 import { environment } from '../../../enviroments/environment';
+import { VaccinetionCreate } from '../../models/vacinaModel/vaccinate';
 
 @Injectable({ providedIn: 'root' })
 export class VacinaService {
@@ -14,6 +15,10 @@ export class VacinaService {
     this.getVaccines();
   }
 
+  /**
+   *                CRUD BÁSICO PARA VACINAS
+   * ==============================================================================
+   */
   /** Carrega e ordena ao inicializar */
   getVaccines() {
     this.http.get<Vaccine[]>(`${this.apiUrl}/vacinas`).subscribe({

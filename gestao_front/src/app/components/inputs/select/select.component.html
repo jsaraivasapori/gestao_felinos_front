@@ -3,7 +3,7 @@
 
   <mat-select [formControl]="control" [placeholder]="placeholder">
     @for (option of options; track option[optionValue]) {
-    <mat-option [value]="option[optionValue]">
+    <mat-option [value]="option">
       {{ option[optionText] }}
     </mat-option>
     }

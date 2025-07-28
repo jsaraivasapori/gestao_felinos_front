@@ -23,12 +23,15 @@ import { SelectComponent } from '../../../components/inputs/select/select.compon
 import { SlideToggleComponent } from '../../../components/inputs/slide-toggle/slide-toggle.component';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { VacinacaoService } from '../../../services/vacinaService/Vacinacao/vacinacao.service';
+import { SnackBarNotificationService } from '../../../services/snackBarNotification/snack-bar-notification.service';
+import { S } from '@angular/cdk/keycodes';
+import { VaccinetionCreate } from '../../../models/vacinaModel/vaccinate';
 
 @Component({
   selector: 'app-form-vacinacao',
   standalone: true,
   imports: [
-    CardComponent,
     ButtonComponent,
     BasicInputComponent,
     DatepickerComponent,
@@ -46,6 +49,8 @@ export class FormVacinacaoComponent implements OnInit {
   private felinoService = inject(FelinoService);
   private vacinaService = inject(VacinaService);
   private fb: FormBuilder = inject(FormBuilder);
+  private vacinacaoService = inject(VacinacaoService);
+  private snackBarService = inject(SnackBarNotificationService);
 
   // formConfig: FormField[] = [];
   vacinacaoForm!: FormGroup;
@@ -63,21 +68,55 @@ export class FormVacinacaoComponent implements OnInit {
       },
       error: (err) => console.error(err),
     });
+    console.log(this.felinos, this.vacinas);
 
-    this.vacinacaoForm = this.fb.group({
+    this.vacinacaoForm = this.buildForm();
+  }
+
+  buildForm(): FormGroup {
+    return this.fb.group({
       felino: ['', Validators.required],
       vacina: ['', Validators.required],
       lote: ['', Validators.required],
       medVet: ['', Validators.required],
       valorPago: ['', [Validators.required, Validators.min(0.1)]],
-      dosesNecessarias: [
-        '',
-        [Validators.required, Validators.pattern('^[1-9][0-9]*$')],
-      ],
+      dosesNecessarias: ['', [Validators.pattern('^[1-9][0-9]*$')]],
       dataProximaVacina: [new Date()],
       intervaloEntreDosesEmDias: ['', Validators.pattern('^[0-9][0-9]*$')],
       requerReforcoAnual: [false, Validators.required],
     });
+  }
+
+  onFormSubmitted() {
+    const form = this.vacinacaoForm.value;
+    const payload = {
+      felinoId: form.felino.id,
+      vacinaId: form.vacina.id,
+      lote: form.lote,
+      medVet: form.medVet,
+      laboratorio: 'teste',
+      valorPago: form.valorPago,
+      dosesNecessarias: form.dosesNecessarias,
+      dataProximaVacina: form.dataProximaVacina,
+      intervaloEntreDosesEmDias: form.intervaloEntreDosesEmDias,
+      requerReforcoAnual: form.requerReforcoAnual,
+    } as VaccinetionCreate;
+
+    console.log('Form Values:', payload);
+
+    this.vacinacaoService.createVaccination(payload).subscribe({
+      next: () => {
+        this.snackBarService.showSucess('Vacinação realizada com sucesso!');
+        this.router.navigate(['home', 'vacinas']);
+      },
+      error: (error) => {
+        console.error(error);
+        this.snackBarService.shoError('Erro ao efetuar a vacinação');
+      },
+    });
+  }
+  onCancel() {
+    this.router.navigate(['home', 'vacinas']);
   }
 
   /** Getter para usar no [control] dos inputs */
@@ -107,13 +146,5 @@ export class FormVacinacaoComponent implements OnInit {
   }
   get requerReforcoAnual() {
     return this.vacinacaoForm.get('requerReforcoAnual') as FormControl;
-  }
-  onFormSubmitted() {
-    const formValue = this.vacinacaoForm.value;
-    console.log(formValue);
-    this.router.navigate(['home', 'vacinas']);
-  }
-  onCancel() {
-    this.router.navigate(['home', 'vacinas']);
   }
 }

@@ -12,7 +12,7 @@ import {
 import { Router } from '@angular/router';
 import { FelinoService } from '../../../services/felinoService/felino.service';
 import { VacinaService } from '../../../services/vacinaService/vacina.service';
-import { combineLatest, forkJoin, zip } from 'rxjs';
+import { combineLatest, forkJoin, Subject, takeUntil, zip } from 'rxjs';
 import { FelinoInfoBasic } from '../../../models/felinoModel/felino-model';
 import { Vaccine } from '../../../models/vacinaModel/vacina';
 import { CardComponent } from '../../../components/card/card.component';
@@ -51,12 +51,17 @@ export class FormVacinacaoComponent implements OnInit {
   private fb: FormBuilder = inject(FormBuilder);
   private vacinacaoService = inject(VacinacaoService);
   private snackBarService = inject(SnackBarNotificationService);
+  private destroy$ = new Subject<void>();
 
   // formConfig: FormField[] = [];
   vacinacaoForm!: FormGroup;
   felinos: FelinoInfoBasic[] = [];
   vacinas: Vaccine[] = [];
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   ngOnInit(): void {
     combineLatest([
       this.felinoService.felinoOnlyNameAndId$,
@@ -71,6 +76,7 @@ export class FormVacinacaoComponent implements OnInit {
     console.log(this.felinos, this.vacinas);
 
     this.vacinacaoForm = this.buildForm();
+    this.observarMudancasDoses();
   }
 
   buildForm(): FormGroup {
@@ -81,14 +87,40 @@ export class FormVacinacaoComponent implements OnInit {
       medVet: ['', Validators.required],
       valorPago: ['', [Validators.required, Validators.min(0.1)]],
       dosesNecessarias: ['', [Validators.pattern('^[1-9][0-9]*$')]],
-      dataProximaVacina: [new Date()],
-      intervaloEntreDosesEmDias: ['', Validators.pattern('^[0-9][0-9]*$')],
+      dataProximaVacina: [{ value: null, disabled: false }],
+      intervaloEntreDosesEmDias: [
+        { value: null, disabled: false },
+        Validators.pattern('^[0-9][0-9]*$'),
+      ],
       requerReforcoAnual: [false, Validators.required],
     });
   }
+  private observarMudancasDoses(): void {
+    // Usamos o getter que você já criou
+    this.dosesNecessarias.valueChanges
+      .pipe(
+        takeUntil(this.destroy$) // Garante que a inscrição será finalizada quando o componente for destruído
+      )
+      .subscribe((doses) => {
+        // Converte para número para garantir a comparação correta
+        const numDoses = Number(doses);
 
+        if (numDoses === 1) {
+          // Se for 1, limpa o valor e desabilita os campos
+          this.dataProximaVacina.setValue(null);
+          this.dataProximaVacina.disable();
+
+          this.intervaloEntreDosesEmDias.setValue(null);
+          this.intervaloEntreDosesEmDias.disable();
+        } else {
+          // Se for qualquer outro valor, habilita os campos novamente
+          this.dataProximaVacina.enable();
+          this.intervaloEntreDosesEmDias.enable();
+        }
+      });
+  }
   onFormSubmitted() {
-    const form = this.vacinacaoForm.value;
+    const form = this.vacinacaoForm.getRawValue();
     const payload = {
       felinoId: form.felino.id,
       vacinaId: form.vacina.id,

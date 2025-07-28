@@ -42,4 +42,5 @@ export class BasicInputComponent {
   @Input() placeholder: string = '';
   @Input() type: string = 'text'; // text, email, password, etc.
   @Input() hint: string = '';
+  @Input() disable: boolean = false;
 }

@@ -1,10 +1,4 @@
-import {
-  Component,
-  computed,
-  inject,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -22,6 +16,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { FormNewVaccineComponent } from './form-new-vaccine/form-new-vaccine.component';
+import { VacinacaoService } from '../../services/vacinaService/Vacinacao/vacinacao.service';
+import { SnackBarNotificationService } from '../../services/snackBarNotification/snack-bar-notification.service';
 
 @Component({
   selector: 'app-vacinacao',
@@ -43,10 +39,15 @@ import { FormNewVaccineComponent } from './form-new-vaccine/form-new-vaccine.com
   styleUrl: './vacinacao.component.scss',
 })
 export class VacinacaoComponent {
-  router = inject(Router);
+  private vacinacaoService = inject(VacinacaoService);
   private breakpointObserver = inject(BreakpointObserver);
+
+  router = inject(Router);
   activedRoute = inject(ActivatedRoute);
+
   readonly dialog = inject(MatDialog);
+  readonly dataSource = this.vacinacaoService.dataTable;
+
   // --- LÓGICA DE RESPONSIVIDADE ---
   private isHandset$ = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -55,59 +56,23 @@ export class VacinacaoComponent {
 
   // --- GERENCIAMENTO DE DADOS ---
   // Fonte de verdade para os dados de vacinação
-  dataSource: WritableSignal<any[]> = signal([
-    {
-      felino: 'Simba',
-      vacina: 'V5 Felina',
-      dataAplicacao: '2025-07-15',
-      status: 'Aplicado',
-    },
-    {
-      felino: 'Nala',
-      vacina: 'Antirrábica',
-      dataAplicacao: '2025-07-20',
-      status: 'Agendado',
-    },
-    {
-      felino: 'Mufasa',
-      vacina: 'V5 Felina',
-      dataAplicacao: '2025-06-01',
-      status: 'Pendente',
-    },
-    {
-      felino: 'Scar',
-      vacina: 'Leucemia Felina',
-      dataAplicacao: '2025-07-18',
-      status: 'Confirmado',
-    },
-    {
-      felino: 'Kiara',
-      vacina: 'V5 Felina',
-      dataAplicacao: '2025-07-18',
-      status: 'Aplicado',
-    },
-    {
-      felino: 'fsdd',
-      vacina: '35 Felina',
-      dataAplicacao: '2025-07-18',
-      status: 'Aplicado',
-    },
-    {
-      felino: 'nbv',
-      vacina: 'V5 Felina',
-      dataAplicacao: '2025-07-18',
-      status: 'Aplicado',
-    },
-  ]);
+
   // Sinal para o valor do filtro de busca
   filterValue = signal('');
+
   // --- CONFIGURAÇÃO DA TABELA/CARDS ---
-  columnsToDisplay = ['felino', 'vacina', 'dataAplicacao', 'status', 'action'];
+  columnsToDisplay = [
+    'felino',
+    'vacina',
+    'dataAplicacao',
+    'protocoloVacinalStatus',
+    'action',
+  ];
   columnHeaders = {
     felino: 'Felino',
     vacina: 'Vacina',
     dataAplicacao: 'Data da Aplicação',
-    status: 'Status',
+    protocoloVacinalStatus: 'Status',
     action: 'Ações',
   };
 
@@ -133,8 +98,6 @@ export class VacinacaoComponent {
     const startIndex = this.currentPage() * this.pageSize;
     return items.slice(startIndex, startIndex + this.pageSize);
   });
-
-  ngOnInit() {}
 
   // --- MANIPULADORES DE EVENTOS ---
   handleFilter(event: Event) {

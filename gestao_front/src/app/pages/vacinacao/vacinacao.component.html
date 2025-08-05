@@ -115,7 +115,12 @@
   <div class="row g-3">
     @for (item of pagedCardData(); track item.felino) {
     <div class="col-12">
-      <mat-card [ngClass]="'status-' + item.status.toLowerCase()">
+      <mat-card
+        [ngClass]="{
+          'status-pendente': item.protocoloVacinalStatus === 'em_andamento',
+          'status-confirmado': item.protocoloVacinalStatus === 'completo'
+        }"
+      >
         <mat-card-header>
           <mat-card-title>{{ item.felino }}</mat-card-title>
           <mat-card-subtitle>{{ item.vacina }}</mat-card-subtitle>
@@ -124,7 +129,7 @@
           <p><strong>Data:</strong> {{ item.dataAplicacao }}</p>
           <p>
             <strong>Status:</strong>
-            <span class="status-text">{{ item.status }}</span>
+            <span class="status-text">{{ item.protocoloVacinalStatus }}</span>
           </p>
         </mat-card-content>
         <mat-divider></mat-divider>

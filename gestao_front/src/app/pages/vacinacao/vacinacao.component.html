@@ -1,175 +1,130 @@
-<!-- Cabeçalho da Página -->
-
-<div class="row">
-  <div class="col-12 col-sm-12 col-lg-6">
-    <h1 class="titulo">Gerenciamento de Vacinas</h1>
+<div class="header-container">
+  <div>
+    <h1 class="titulo">Dashboard de Vacinas</h1>
     <p class="subtitulo">
-      Visualize, filtre e gerencie todas as aplicações de vacinas
+      Visão geral e ações rápidas para o controle de vacinação
     </p>
   </div>
-
-  <div class="col-12 col-sm-12 col-lg-6">
-    <div class="d-flex justify-content-lg-end flex-wrap">
-      <app-button
-        buttonStyle="flat"
-        text="Aplicar Vacina"
-        icon="add_circle"
-        (clicked)="aplicarNovaVacina()"
-        style="--button-font-size: 16px"
-        class="me-lg-2 me-md-2 me-sm-2 mb-2"
-      ></app-button>
-      <app-button
-        buttonStyle="stroked"
-        icon="vaccines"
-        (clicked)="openDialogCadastrarVacina()"
-        text="Cadastrar  Vacina"
-      ></app-button>
-    </div>
+  <div class="header-actions">
+    <button mat-flat-button color="primary" (click)="aplicarNovaVacina()">
+      <mat-icon>add_circle</mat-icon>
+      <span>Aplicar Dose</span>
+    </button>
+    <button mat-stroked-button (click)="openDialogCadastrarVacina()">
+      <mat-icon>vaccines</mat-icon>
+      <span>Catálogo de Vacinas</span>
+    </button>
   </div>
 </div>
 
-<!-- Cards de Resumo (KPIs) -->
-<div class="row mt-md-4 mt-3 g-4">
-  <!-- Card 1 -->
-  <div class="col-12 col-sm-6 col-lg-3">
-    <app-card>
-      <div class="d-flex flex-row align-items-center pb-2">
-        <div class="circle-blue mx-4 flex-shrink-0">
-          <mat-icon style="color: #2854c5" class="animation"
-            >check_circle</mat-icon
-          >
-        </div>
-        <div class="d-flex flex-column text-container">
-          <span class="card-title">Aplicado</span>
-          <span class="card-value">128</span>
-        </div>
+@if (isLoading()) {
+<div class="loading-container">
+  <mat-spinner diameter="50"></mat-spinner>
+  <p>Carregando dados do dashboard...</p>
+</div>
+} @else {
+<div class="dashboard-content">
+  <div class="kpi-grid">
+    <mat-card class="kpi-card">
+      <mat-icon class="kpi-icon color-accent">check_circle</mat-icon>
+      <div class="kpi-content">
+        <span class="card-title me-2">Doses Aplicadas</span>
+        <span class="card-value">{{ kpis()?.aplicado || 0 }}</span>
       </div>
-    </app-card>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <mat-icon class="kpi-icon color-primary">event</mat-icon>
+      <div class="kpi-content">
+        <span class="card-title me-2">Agendado</span>
+        <span class="card-value">{{ kpis()?.agendado || 0 }}</span>
+      </div>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <mat-icon class="kpi-icon color-warn">assignment_late</mat-icon>
+      <div class="kpi-content">
+        <span class="card-title me-2">Atrasados</span>
+        <span class="card-value">{{ kpis()?.atrasados || 0 }}</span>
+      </div>
+    </mat-card>
+    <mat-card class="kpi-card">
+      <mat-icon class="kpi-icon color-success">beenhere</mat-icon>
+      <div class="kpi-content">
+        <span class="card-title me-2">Ciclos Completos</span>
+        <span class="card-value">{{ kpis()?.ciclosCompletos || 0 }}</span>
+      </div>
+    </mat-card>
   </div>
-  <!-- Card 2 -->
-  <div class="col-12 col-sm-6 col-lg-3">
-    <app-card>
-      <div class="d-flex flex-row align-items-center pb-2">
-        <div class="circle-yelow mx-4 flex-shrink-0">
-          <mat-icon style="color: #a96424" class="animation">event</mat-icon>
-        </div>
-        <div class="d-flex flex-column text-container">
-          <span class="card-title">Agendado</span>
-          <span class="card-value"> 54</span>
-        </div>
-      </div>
-    </app-card>
-  </div>
-  <!-- Card 3 -->
-  <div class="col-12 col-sm-6 col-lg-3">
-    <app-card>
-      <div class="d-flex flex-row align-items-center pb-2">
-        <div class="circle-red mx-4 flex-shrink-0">
-          <mat-icon style="color: #ff0000" class="animation"
-            >assignment_late</mat-icon
-          >
-        </div>
-        <div class="d-flex flex-column text-container">
-          <span class="card-title">Pendentes</span>
-          <span class="card-value"> 12</span>
-        </div>
-      </div>
-    </app-card>
-  </div>
-  <!-- Card 4 -->
-  <div class="col-12 col-sm-6 col-lg-3">
-    <app-card>
-      <div class="d-flex flex-row align-items-center pb-2">
-        <div class="circle-gren mx-4 flex-shrink-0">
-          <mat-icon style="color: #0c620c" class="animation">beenhere</mat-icon>
-        </div>
-        <div class="d-flex flex-column text-container">
-          <span class="card-title">Confirmados</span>
-          <span class="card-value"> 62</span>
-        </div>
-      </div>
-    </app-card>
+
+  <div class="widgets-grid">
+    <mat-card class="widget-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar color="warn">notification_important</mat-icon>
+        <mat-card-title>Ações Urgentes</mat-card-title>
+        <mat-card-subtitle
+          >Protocolos atrasados ou vencendo em breve</mat-card-subtitle
+        >
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          @for (p of acoesUrgentes(); track p.id) {
+          <mat-list-item>
+            <mat-icon matListItemIcon>pets</mat-icon>
+            <div matListItemTitle>
+              {{ p.felino.nome }} - {{ p.vacina.nome }}
+            </div>
+            <div matListItemLine>
+              <span
+                >Próxima dose:
+                {{ p.dataProximaVacina | date : "dd/MM/yyyy" }}</span
+              >
+            </div>
+            <mat-chip-set matListItemMeta>
+              <mat-chip [ngClass]="getStatusClass(p.status)">
+                {{ p.status | titlecase }}
+              </mat-chip>
+            </mat-chip-set>
+          </mat-list-item>
+          } @empty {
+          <div class="empty-state">
+            <mat-icon>task_alt</mat-icon>
+            <span>Nenhuma ação urgente. Tudo em dia!</span>
+          </div>
+          }
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="widget-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar color="primary">history</mat-icon>
+        <mat-card-title>Atividades Recentes</mat-card-title>
+        <mat-card-subtitle>Últimas 5 doses aplicadas</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          @for (a of atividadesRecentes(); track a.id) {
+          <mat-list-item>
+            <mat-icon matListItemIcon>vaccines</mat-icon>
+            <div matListItemTitle>
+              {{ a.protocoloVacinal.felino.nome }} -
+              {{ a.protocoloVacinal.vacina.nome }}
+            </div>
+            <div matListItemLine>
+              <span
+                >Aplicada em: {{ a.dataAplicacao | date : "dd/MM/yyyy" }} por
+                {{ a.medVet }}</span
+              >
+            </div>
+          </mat-list-item>
+          } @empty {
+          <div class="empty-state">
+            <mat-icon>hourglass_empty</mat-icon>
+            <span>Nenhuma aplicação recente.</span>
+          </div>
+          }
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>
-
-<!-- Seção da Tabela/Cards Responsivos -->
-<div class="mt-4 border border-lihgt p-3">
-  @if(isMobile()){
-  <h5>Lista de Aplicação</h5>
-  <p>Utilize o filtro para maior agilidade</p>
-  }
-  <!-- Campo de Filtro -->
-  <mat-form-field appearance="outline" class="w-100 mt-2">
-    <mat-label>Buscar aplicação...</mat-label>
-    <input
-      matInput
-      (keyup)="handleFilter($event)"
-      placeholder="Ex: Simba, V5 Felina, etc."
-    />
-    <mat-icon matSuffix>search</mat-icon>
-  </mat-form-field>
-
-  <!-- LÓGICA DE RENDERIZAÇÃO CONDICIONAL -->
-  @if (isMobile()) {
-  <!-- Início: Estrutura dos Cards para Mobile -->
-  <div class="row g-3">
-    @for (item of pagedCardData(); track item.felino) {
-    <div class="col-12">
-      <mat-card
-        [ngClass]="{
-          'status-pendente': item.protocoloVacinalStatus === 'em_andamento',
-          'status-confirmado': item.protocoloVacinalStatus === 'completo'
-        }"
-      >
-        <mat-card-header>
-          <mat-card-title>{{ item.felino }}</mat-card-title>
-          <mat-card-subtitle>{{ item.vacina }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <p><strong>Data:</strong> {{ item.dataAplicacao }}</p>
-          <p>
-            <strong>Status:</strong>
-            <span class="status-text">{{ item.protocoloVacinalStatus }}</span>
-          </p>
-        </mat-card-content>
-        <mat-divider></mat-divider>
-        <mat-card-actions align="end">
-          <app-button buttonStyle="icon" icon="edit"></app-button>
-          <app-button
-            buttonStyle="icon"
-            icon="delete"
-            color="warn"
-          ></app-button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-    } @empty {
-    <p class="text-center w-100 mt-3">Nenhum registro encontrado.</p>
-    }
-  </div>
-
-  <mat-paginator
-    class="mt-3"
-    [length]="filteredDataSource().length"
-    [pageSize]="pageSize"
-    [pageIndex]="currentPage()"
-    (page)="onPageChange($event)"
-    showFirstLastButtons
-    aria-label="Selecionar página"
-  >
-  </mat-paginator>
-  <!-- Fim: Estrutura dos Cards -->
-
-  } @else {
-  <!-- Visualização de Tabela para Desktop -->
-  <app-table-re-orderable-columns
-    [dataSource]="dataSource()"
-    [columnsToDisplay]="columnsToDisplay"
-    [columnHeaders]="columnHeaders"
-    [filterValue]="filterValue()"
-    (editElement)="onEdit($event)"
-    (deleteElement)="onDelete($event)"
-  >
-  </app-table-re-orderable-columns>
-  }
-</div>
+}

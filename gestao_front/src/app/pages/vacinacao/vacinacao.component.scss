@@ -1,144 +1,136 @@
-@keyframes pulsar {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-  100% {
-    transform: scale(1);
-  }
+:host {
+  display: block;
+  padding: 24px;
 }
 
-@media (max-width: 576px) {
-  .titulo {
-    font-size: 1.7rem;
-    font-weight: 500;
-  }
-}
-.animation {
-  animation: pulsar 1.2s infinite ease-in-out;
-}
-.circle {
-  border-radius: 50%;
-  aspect-ratio: 1 / 1;
-  width: 50px;
-  height: 50px;
+.header-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  .circle-blue {
-    background-color: #aac1f0;
-  }
-  .circle-yelow {
-    background-color: #f9db78;
-  }
-  .circle-red {
-    background-color: #ffe5e5;
-  }
-  .circle-gren {
-    background-color: #90ee90;
-  }
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
 }
-.card-title {
-  font-weight: 400;
-  font-size: 14px;
-}
-.card-value {
-  font-weight: 600;
-  font-size: 18px;
-}
-// ===================================
-// Estilos Gerais da Página
-// ===================================
 
 .titulo {
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 2em;
+  font-weight: 600;
+  margin: 0;
 }
 
 .subtitulo {
-  color: #6c757d; // Cinza sutil para o subtítulo
+  color: rgba(0, 0, 0, 0.6);
 }
 
-// ===================================
-// Estilos para os Cards de Resumo (KPIs)
-// ===================================
-
-.text-container {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.header-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
-.card-title {
-  font-size: 0.9rem;
-  color: #6c757d;
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 48px;
+  gap: 16px;
+  color: rgba(0, 0, 0, 0.6);
+  min-height: 50vh;
 }
 
-.card-value {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #212529;
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
 }
 
-.circle-blue,
-.circle-yelow,
-.circle-red,
-.circle-gren {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+.kpi-card {
   display: flex;
   align-items: center;
+  padding: 16px;
+}
+
+.kpi-icon {
+  transform: scale(1.8);
+  margin: 0 20px 0 8px;
+  opacity: 0.8;
+}
+
+// Cores personalizadas para ícones
+.color-primary {
+  color: #3f51b5;
+}
+.color-accent {
+  color: #ff4081;
+}
+.color-warn {
+  color: #f44336;
+}
+.color-success {
+  color: #4caf50;
+}
+
+.kpi-content {
+  .card-title {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 0.9em;
+  }
+  .card-value {
+    font-size: 1.8em;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+}
+
+.widgets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+}
+
+.widget-card {
+  mat-card-content {
+    padding-top: 8px;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  flex-shrink: 0; // Impede que o círculo encolha
+  padding: 32px;
+  color: #adb5bd;
+  text-align: center;
+  gap: 8px;
+  min-height: 150px;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+  }
 }
 
-.circle-blue {
-  background-color: #eaf0ff;
-}
-.circle-yelow {
-  background-color: #fff4e5;
-}
-.circle-red {
-  background-color: #ffeaea;
-}
-.circle-gren {
-  background-color: #e6f4e6;
+// Estilos para as "tags" (chips) de status
+.status-chip--atrasado {
+  background-color: #f8d7da !important;
+  color: #721c24 !important;
 }
 
-// =========================================================
-// Estilos para os Cards da Lista (Visualização Mobile)
-// =========================================================
-
-// Cada classe de status adiciona uma borda colorida à esquerda do card
-.status-aplicado {
-  border-left: 5px solid #2854c5; // Azul
+.status-chip--em-andamento {
+  background-color: #fff3cd !important;
+  color: #856404 !important;
 }
 
-.status-agendado {
-  border-left: 5px solid #a96424; // Amarelo/Laranja
+.status-chip--completo {
+  background-color: #d4edda !important;
+  color: #155724 !important;
 }
 
-.status-pendente {
-  border-left: 5px solid #ff0000; // Vermelho
-}
-
-.status-confirmado {
-  border-left: 5px solid #0c620c; // Verde
-}
-
-// Estilo para o texto do status dentro do card
-.status-text {
-  font-weight: 500;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.9rem;
-  display: inline-block;
-}
-
-// Garante que os botões de ação nos cards mobile tenham um bom espaçamento
-mat-card-actions app-button[buttonStyle="icon"] {
-  margin-left: 8px;
+.status-chip--pendente {
+  background-color: #e2e3e5 !important;
+  color: #383d41 !important;
 }

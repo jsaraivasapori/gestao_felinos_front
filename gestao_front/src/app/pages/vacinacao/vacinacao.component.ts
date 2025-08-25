@@ -14,7 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormNewVaccineComponent } from './form-new-vaccine/form-new-vaccine.component';
 import { VacinacaoService } from '../../services/vacinaService/Vacinacao/vacinacao.service';
 import { SnackBarNotificationService } from '../../services/snackBarNotification/snack-bar-notification.service';
@@ -22,54 +22,14 @@ import { forkJoin } from 'rxjs';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AplicarVacinaDialogComponent } from './dialog/aplicar-vacina-dialog/aplicar-vacina-dialog.component';
+import {
+  VacinacaoKpis,
+  ProtocoloVacinal,
+  AplicacaoVacina,
+  StatusCiclo,
+} from '../../models/vacinaModel/vacina';
 
-// src/app/core/interfaces/protocolo.interface.ts
-
-// Enum para corresponder ao backend
-export enum StatusCiclo {
-  PENDENTE = 'PENDENTE',
-  EM_ANDAMENTO = 'EM_ANDAMENTO',
-  ATRASADO = 'ATRASADO',
-  COMPLETO = 'COMPLETO',
-}
-
-// Interfaces simplificadas para o frontend
-export interface Felino {
-  id: string;
-  nome: string;
-}
-
-export interface Vacina {
-  id: string;
-  nome: string;
-}
-
-export interface AplicacaoVacina {
-  id: string;
-  dataAplicacao: string; // ISO Date String
-  medVet: string;
-  protocoloVacinal: {
-    felino: Felino;
-    vacina: Vacina;
-  };
-}
-
-export interface ProtocoloVacinal {
-  id: string;
-  status: StatusCiclo;
-  dataProximaVacina?: string; // ISO Date String
-  dataLembreteProximoCiclo?: string; // ISO Date String
-  felino: Felino;
-  vacina: Vacina;
-}
-
-// Para os cards de status (KPIs)
-export interface VacinacaoKpis {
-  aplicado: number;
-  agendado: number;
-  atrasados: number;
-  ciclosCompletos: number;
-}
 @Component({
   selector: 'app-vacinacao',
   standalone: true,
@@ -81,6 +41,7 @@ export interface VacinacaoKpis {
     MatListModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
   ],
   templateUrl: './vacinacao.component.html',
   styleUrl: './vacinacao.component.scss',
@@ -88,6 +49,7 @@ export interface VacinacaoKpis {
 export class VacinacaoComponent implements OnInit {
   // O serviço continua injetado, mas não será usado para buscar dados nesta versão mockada.
   private vacinacaoService = inject(VacinacaoService);
+  private dialog = inject(MatDialog); // Injete o MatDialog
 
   // Signals para o estado do componente
   isLoading = signal<boolean>(true);
@@ -106,7 +68,7 @@ export class VacinacaoComponent implements OnInit {
     atrasados: 4,
     ciclosCompletos: 68,
   };
-  private MOCK_ACOES_URGENTES: ProtocoloVacinal[] = [
+  private MOCK_ACOES_URGENTES: any[] = [
     {
       id: 'p1',
       status: StatusCiclo.ATRASADO,
@@ -131,7 +93,7 @@ export class VacinacaoComponent implements OnInit {
       vacina: { id: 'v1', nome: 'V5 Felina (Dose 2)' },
     },
   ];
-  private MOCK_ATIVIDADES_RECENTES: AplicacaoVacina[] = [
+  private MOCK_ATIVIDADES_RECENTES: any[] = [
     {
       id: 'a1',
       dataAplicacao: new Date().toISOString(),
@@ -164,7 +126,7 @@ export class VacinacaoComponent implements OnInit {
       },
     },
   ];
-  private MOCK_PROXIMOS_AGENDAMENTOS: ProtocoloVacinal[] = [
+  private MOCK_PROXIMOS_AGENDAMENTOS: any[] = [
     {
       id: 'p4',
       status: StatusCiclo.EM_ANDAMENTO,
@@ -248,7 +210,32 @@ export class VacinacaoComponent implements OnInit {
   }
 
   aplicarNovaVacina(): void {
-    console.log('Abrir modal/página para aplicar nova vacina...');
+    const dialogRef = this.dialog.open(AplicarVacinaDialogComponent, {
+      width: '500px',
+      // Aqui passaríamos listas de felinos e vacinas para os selects
+      data: { protocolo: null },
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado) {
+        console.log('Dialog fechado com resultado:', resultado);
+        // Aqui você chamaria o this.vacinacaoService.registrar(resultado)
+        // E depois chamaria this.carregarDadosDoDashboard() para atualizar a tela
+      }
+    });
+  }
+  registrarDoseUrgente(protocolo: ProtocoloVacinal): void {
+    const dialogRef = this.dialog.open(AplicarVacinaDialogComponent, {
+      width: '500px',
+      data: { protocolo: protocolo }, // Passa os dados do protocolo para o dialog
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado) {
+        console.log('Dialog (urgente) fechado com resultado:', resultado);
+        // Lógica idêntica à de cima para salvar e recarregar
+      }
+    });
   }
 
   openDialogCadastrarVacina(): void {

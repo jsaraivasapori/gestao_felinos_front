@@ -28,28 +28,28 @@
     <mat-card class="kpi-card">
       <mat-icon class="kpi-icon color-accent">check_circle</mat-icon>
       <div class="kpi-content">
-        <span class="card-title me-2">Doses Aplicadas</span>
+        <span class="card-title">Doses Aplicadas</span>
         <span class="card-value">{{ kpis()?.aplicado || 0 }}</span>
       </div>
     </mat-card>
     <mat-card class="kpi-card">
       <mat-icon class="kpi-icon color-primary">event</mat-icon>
       <div class="kpi-content">
-        <span class="card-title me-2">Agendado</span>
+        <span class="card-title">Agendado</span>
         <span class="card-value">{{ kpis()?.agendado || 0 }}</span>
       </div>
     </mat-card>
     <mat-card class="kpi-card">
       <mat-icon class="kpi-icon color-warn">assignment_late</mat-icon>
       <div class="kpi-content">
-        <span class="card-title me-2">Atrasados</span>
+        <span class="card-title">Atrasados</span>
         <span class="card-value">{{ kpis()?.atrasados || 0 }}</span>
       </div>
     </mat-card>
     <mat-card class="kpi-card">
       <mat-icon class="kpi-icon color-success">beenhere</mat-icon>
       <div class="kpi-content">
-        <span class="card-title me-2">Ciclos Completos</span>
+        <span class="card-title">Ciclos Completos</span>
         <span class="card-value">{{ kpis()?.ciclosCompletos || 0 }}</span>
       </div>
     </mat-card>
@@ -78,11 +78,21 @@
                 {{ p.dataProximaVacina | date : "dd/MM/yyyy" }}</span
               >
             </div>
-            <mat-chip-set matListItemMeta>
+            <div matListItemMeta class="list-item-actions">
               <mat-chip [ngClass]="getStatusClass(p.status)">
                 {{ p.status | titlecase }}
               </mat-chip>
-            </mat-chip-set>
+
+              <button
+                mat-icon-button
+                color="primary"
+                matTooltip="Registrar esta dose"
+                aria-label="Registrar dose urgente"
+                (click)="registrarDoseUrgente(p)"
+              >
+                <mat-icon>vaccines</mat-icon>
+              </button>
+            </div>
           </mat-list-item>
           } @empty {
           <div class="empty-state">

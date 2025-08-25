@@ -1,0 +1,40 @@
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-dialog-content {
+  padding-top: 20px;
+}
+
+// Estilo para o botão com spinner
+button[disabled] {
+  mat-spinner {
+    display: inline-block;
+    margin: 0 8px;
+  }
+}
+// aplicar-vacina-dialog.component.scss
+
+// ... (estilos existentes) ...
+
+.form-section-title {
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.full-width-checkbox {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.form-divider {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}

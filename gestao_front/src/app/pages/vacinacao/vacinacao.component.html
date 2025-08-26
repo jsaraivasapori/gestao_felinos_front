@@ -82,7 +82,6 @@
               <mat-chip [ngClass]="getStatusClass(p.status)">
                 {{ p.status | titlecase }}
               </mat-chip>
-
               <button
                 mat-icon-button
                 color="primary"
@@ -130,6 +129,61 @@
           <div class="empty-state">
             <mat-icon>hourglass_empty</mat-icon>
             <span>Nenhuma aplicação recente.</span>
+          </div>
+          }
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="mt-4">
+    <mat-card class="widget-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="color-primary"
+          >calendar_month</mat-icon
+        >
+        <mat-card-title>Próximos Agendamentos</mat-card-title>
+        <mat-card-subtitle
+          >Planejamento para os próximos 30 dias</mat-card-subtitle
+        >
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          @for (p of proximosAgendamentos(); track p.id) {
+          <mat-list-item>
+            <mat-icon matListItemIcon>pets</mat-icon>
+            <div matListItemTitle>
+              {{ p.felino.nome }} - {{ p.vacina.nome }}
+            </div>
+            <div matListItemLine>
+              @if(p.dataProximaVacina) {
+              <span
+                >Agendado para:
+                {{ p.dataProximaVacina | date : "dd/MM/yyyy" }} (Reforço de
+                Ciclo)</span
+              >
+              } @else if (p.dataLembreteProximoCiclo) {
+              <span
+                >Agendado para:
+                {{ p.dataLembreteProximoCiclo | date : "dd/MM/yyyy" }} (Reforço
+                Anual)</span
+              >
+              }
+            </div>
+            <div matListItemMeta>
+              <button
+                mat-stroked-button
+                color="primary"
+                (click)="verDetalhes(p)"
+              >
+                Ver Detalhes
+              </button>
+            </div>
+          </mat-list-item>
+          } @empty {
+          <div class="empty-state">
+            <mat-icon>event_available</mat-icon>
+            <span>Nenhum agendamento para os próximos 30 dias.</span>
           </div>
           }
         </mat-list>

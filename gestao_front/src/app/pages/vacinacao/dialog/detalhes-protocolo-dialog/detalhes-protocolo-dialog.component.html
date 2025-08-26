@@ -1,0 +1,69 @@
+@if(protocolo) {
+<h2 mat-dialog-title>
+  <mat-icon>info</mat-icon>
+  <span>Detalhes: {{ protocolo.vacina.nome }}</span>
+</h2>
+
+<mat-dialog-content>
+  <div class="info-grid">
+    <div class="info-item">
+      <mat-icon>pets</mat-icon>
+      <p><strong>Felino:</strong> {{ protocolo.felino.nome }}</p>
+    </div>
+    <div class="info-item">
+      <mat-icon>flag</mat-icon>
+      <p><strong>Status:</strong></p>
+      <mat-chip
+        [ngClass]="getStatusClass(protocolo.status)"
+        class="inline-chip"
+      >
+        {{ protocolo.status | titlecase }}
+      </mat-chip>
+    </div>
+    <div class="info-item">
+      <mat-icon>tag</mat-icon>
+      <p>
+        <strong>Doses Necessárias:</strong> {{ protocolo.dosesNecessarias }}
+      </p>
+    </div>
+    <div class="info-item">
+      <mat-icon>event_repeat</mat-icon>
+      <p>
+        <strong>Reforço Anual:</strong>
+        {{ protocolo.requerReforcoAnual ? "Sim" : "Não" }}
+      </p>
+    </div>
+  </div>
+
+  <mat-divider class="divider"></mat-divider>
+
+  <h3>Histórico de Doses Aplicadas</h3>
+
+  @if(protocolo.aplicacoes && protocolo.aplicacoes.length > 0) {
+  <mat-list role="list">
+    @for (app of protocolo.aplicacoes; track app.id; let i = $index) {
+    <mat-list-item role="listitem">
+      <div matListItemIcon class="dose-number">{{ i + 1 }}</div>
+      <div matListItemTitle>
+        Dose aplicada em:
+        <strong>{{ app.dataAplicacao | date : "dd/MM/yyyy" }}</strong>
+      </div>
+      <div matListItemLine>
+        Por: {{ app.medVet }} | Lote: {{ app.lote }} | Lab:
+        {{ app.laboratorio }}
+      </div>
+    </mat-list-item>
+    }
+  </mat-list>
+  } @else {
+  <div class="empty-state">
+    <mat-icon>hourglass_empty</mat-icon>
+    <span>Nenhuma dose aplicada neste protocolo ainda.</span>
+  </div>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-flat-button color="primary" (click)="fechar()">Fechar</button>
+</mat-dialog-actions>
+}

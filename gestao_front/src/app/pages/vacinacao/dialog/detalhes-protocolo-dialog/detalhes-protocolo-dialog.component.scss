@@ -1,0 +1,94 @@
+// src/app/dialogs/detalhes-protocolo-dialog/detalhes-protocolo-dialog.component.scss
+
+:host {
+  display: block;
+}
+
+h2[mat-dialog-title] {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #3f51b5; // Cor primária do tema
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1em;
+
+  p {
+    margin: 0;
+  }
+
+  mat-icon {
+    color: rgba(0, 0, 0, 0.54);
+  }
+}
+
+.inline-chip {
+  margin-left: 4px;
+}
+
+.divider {
+  margin: 24px 0;
+}
+
+h3 {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.dose-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #3f51b5;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  color: #adb5bd;
+  text-align: center;
+  gap: 8px;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+// Reutilizando as classes de status do dashboard para consistência
+.status-chip--atrasado {
+  background-color: #f8d7da !important;
+  color: #721c24 !important;
+}
+.status-chip--em-andamento {
+  background-color: #fff3cd !important;
+  color: #856404 !important;
+}
+.status-chip--completo {
+  background-color: #d4edda !important;
+  color: #155724 !important;
+}
+.status-chip--pendente {
+  background-color: #e2e3e5 !important;
+  color: #383d41 !important;
+}

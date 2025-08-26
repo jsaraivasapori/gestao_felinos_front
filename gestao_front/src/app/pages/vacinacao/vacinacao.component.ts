@@ -14,6 +14,7 @@ import {
   AplicacaoVacina,
   StatusCiclo,
 } from '../../models/vacinaModel/vacina';
+import { DetalhesProtocoloDialogComponent } from './dialog/detalhes-protocolo-dialog/detalhes-protocolo-dialog.component';
 
 @Component({
   selector: 'app-vacinacao',
@@ -45,21 +46,37 @@ export class VacinacaoComponent implements OnInit {
 
   // Expõe o Enum para ser usado no template
   readonly StatusCicloEnum = StatusCiclo;
+  // --- DADOS MOCKADOS ATUALIZADOS COM HISTÓRICO ---
 
-  // --- DADOS MOCKADOS (SIMULADOS) ---
-  private MOCK_KPIS: VacinacaoKpis = {
+  MOCK_KPIS: VacinacaoKpis = {
     aplicado: 132,
     agendado: 18,
     atrasados: 4,
     ciclosCompletos: 68,
   };
-  private MOCK_ACOES_URGENTES: any[] = [
+
+  MOCK_ACOES_URGENTES: ProtocoloVacinal[] = [
     {
       id: 'p1',
       status: StatusCiclo.ATRASADO,
       dataProximaVacina: '2025-08-15T12:00:00.000Z',
       felino: { id: 'f1', nome: 'Tom' },
       vacina: { id: 'v1', nome: 'V5 Felina (Reforço)' },
+      dosesNecessarias: 3,
+      intervaloEntreDosesEmDias: 21,
+      requerReforcoAnual: true,
+      // HISTÓRICO ADICIONADO:
+      aplicacoes: [
+        {
+          id: 'app1-1',
+          dataAplicacao: '2025-07-25T10:00:00.000Z',
+          medVet: 'Dr. João Silva',
+          lote: 'LOTE-A1',
+          laboratorio: 'VetLab',
+          valorPago: 50,
+          protocoloVacinal: {} as any,
+        },
+      ],
     },
     {
       id: 'p2',
@@ -67,6 +84,11 @@ export class VacinacaoComponent implements OnInit {
       dataProximaVacina: new Date().toISOString(),
       felino: { id: 'f2', nome: 'Frajola' },
       vacina: { id: 'v2', nome: 'Raiva' },
+      dosesNecessarias: 1,
+      intervaloEntreDosesEmDias: 0,
+      requerReforcoAnual: true,
+      // HISTÓRICO ADICIONADO: (vazio, pois é a primeira dose)
+      aplicacoes: [],
     },
     {
       id: 'p3',
@@ -76,9 +98,27 @@ export class VacinacaoComponent implements OnInit {
       ).toISOString(),
       felino: { id: 'f3', nome: 'Garfield' },
       vacina: { id: 'v1', nome: 'V5 Felina (Dose 2)' },
+      dosesNecessarias: 3,
+      intervaloEntreDosesEmDias: 21,
+      requerReforcoAnual: true,
+      // HISTÓRICO ADICIONADO:
+      aplicacoes: [
+        {
+          id: 'app3-1',
+          dataAplicacao: new Date(
+            Date.now() - 18 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+          medVet: 'Dra. Ana Costa',
+          lote: 'LOTE-B2',
+          laboratorio: 'PetMune',
+          valorPago: 55,
+          protocoloVacinal: {} as any,
+        },
+      ],
     },
   ];
-  private MOCK_ATIVIDADES_RECENTES: any[] = [
+
+  MOCK_ATIVIDADES_RECENTES: any[] = [
     {
       id: 'a1',
       dataAplicacao: new Date().toISOString(),
@@ -111,7 +151,8 @@ export class VacinacaoComponent implements OnInit {
       },
     },
   ];
-  private MOCK_PROXIMOS_AGENDAMENTOS: any[] = [
+
+  MOCK_PROXIMOS_AGENDAMENTOS: ProtocoloVacinal[] = [
     {
       id: 'p4',
       status: StatusCiclo.EM_ANDAMENTO,
@@ -120,15 +161,71 @@ export class VacinacaoComponent implements OnInit {
       ).toISOString(),
       felino: { id: 'f7', nome: 'Félix' },
       vacina: { id: 'v3', nome: 'V4 Felina (Dose 2)' },
+      dosesNecessarias: 3,
+      intervaloEntreDosesEmDias: 21,
+      requerReforcoAnual: true,
+      // HISTÓRICO ADICIONADO:
+      aplicacoes: [
+        {
+          id: 'app4-1',
+          dataAplicacao: new Date(
+            Date.now() - 6 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+          medVet: 'Dr. João Silva',
+          lote: 'LOTE-C3',
+          laboratorio: 'VetLab',
+          valorPago: 60,
+          protocoloVacinal: {} as any,
+        },
+        {
+          id: 'app5-1',
+          dataAplicacao: new Date(
+            Date.now() - 6 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+          medVet: 'Dr. João Silva',
+          lote: 'LOTE-d56',
+          laboratorio: 'VetLab',
+          valorPago: 60,
+          protocoloVacinal: {} as any,
+        },
+      ],
     },
     {
-      id: 'p5',
-      status: StatusCiclo.COMPLETO,
-      dataLembreteProximoCiclo: new Date(
-        Date.now() + 25 * 24 * 60 * 60 * 1000
+      id: 'p6',
+      status: StatusCiclo.EM_ANDAMENTO,
+      dataProximaVacina: new Date(
+        Date.now() + 28 * 24 * 60 * 60 * 1000
       ).toISOString(),
-      felino: { id: 'f8', nome: 'Misty' },
-      vacina: { id: 'v2', nome: 'Raiva (Reforço Anual)' },
+      felino: { id: 'f9', nome: 'Bichento' },
+      vacina: { id: 'v1', nome: 'V5 Felina (Dose 3)' },
+      dosesNecessarias: 3,
+      intervaloEntreDosesEmDias: 21,
+      requerReforcoAnual: true,
+      // HISTÓRICO ADICIONADO (com 2 doses já aplicadas):
+      aplicacoes: [
+        {
+          id: 'app6-1',
+          dataAplicacao: new Date(
+            Date.now() - 14 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+          medVet: 'Dra. Ana Costa',
+          lote: 'LOTE-D4',
+          laboratorio: 'PetMune',
+          valorPago: 55,
+          protocoloVacinal: {} as any,
+        },
+        {
+          id: 'app6-2',
+          dataAplicacao: new Date(
+            Date.now() + 7 * 24 * 60 * 60 * 1000
+          ).toISOString(),
+          medVet: 'Dra. Ana Costa',
+          lote: 'LOTE-E5',
+          laboratorio: 'PetMune',
+          valorPago: 55,
+          protocoloVacinal: {} as any,
+        },
+      ],
     },
   ];
 
@@ -225,5 +322,15 @@ export class VacinacaoComponent implements OnInit {
 
   openDialogCadastrarVacina(): void {
     console.log('Abrir modal para gerenciar o catálogo de vacinas...');
+  }
+
+  verDetalhes(protocolo: ProtocoloVacinal): void {
+    // Precisamos de todos os dados, incluindo as aplicações.
+    // O mock já deve ter, mas em uma chamada real, garanta que o backend os envie.
+
+    this.dialog.open(DetalhesProtocoloDialogComponent, {
+      width: '600px',
+      data: protocolo, // Passa o objeto completo do protocolo para o dialog
+    });
   }
 }

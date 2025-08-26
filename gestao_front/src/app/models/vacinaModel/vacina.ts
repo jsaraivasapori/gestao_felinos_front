@@ -1,4 +1,4 @@
-import { Felino } from '../felinoModel/felino-model';
+import { Felino, FelinoInfoBasic } from '../felinoModel/felino-model';
 
 /**
  * @fileoverview Este arquivo contém todas as interfaces, enums e tipos de dados
@@ -46,7 +46,7 @@ export interface AplicacaoVacina {
   lote: string;
   valorPago?: number | null;
   protocoloVacinal: {
-    felino: Felino; // <-- Agora usa a interface Felino completa
+    felino: FelinoInfoBasic; // <-- Agora usa a interface Felino completa
     vacina: Vaccine;
   };
 }
@@ -62,7 +62,7 @@ export interface ProtocoloVacinal {
   requerReforcoAnual: boolean;
   dataProximaVacina?: string | null;
   dataLembreteProximoCiclo?: string | null;
-  felino: Felino; // <-- Agora usa a interface Felino completa
+  felino: FelinoInfoBasic; // <-- Agora usa a interface Felino completa
   vacina: Vaccine;
   aplicacoes?: AplicacaoVacina[];
 }

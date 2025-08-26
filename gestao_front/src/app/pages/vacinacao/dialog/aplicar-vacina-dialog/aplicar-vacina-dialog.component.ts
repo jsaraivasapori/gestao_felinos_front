@@ -32,7 +32,10 @@ import {
   Vaccine,
 } from '../../../../models/vacinaModel/vacina';
 import { FelinoService } from '../../../../services/felinoService/felino.service';
-import { Felino } from '../../../../models/felinoModel/felino-model';
+import {
+  Felino,
+  FelinoInfoBasic,
+} from '../../../../models/felinoModel/felino-model';
 
 export interface AplicarVacinaDialogData {
   protocolo?: ProtocoloVacinal;
@@ -71,9 +74,9 @@ export class AplicarVacinaDialogComponent implements OnInit {
   catalogoVacinas = signal<Vaccine[]>([]);
   filteredVacinas$!: Observable<Vaccine[]>;
 
-  felinoInputCtrl = new FormControl<string | Felino>('');
-  catalogoFelinos = signal<Felino[]>([]);
-  filteredFelinos$!: Observable<Felino[]>;
+  felinoInputCtrl = new FormControl<string | FelinoInfoBasic>('');
+  catalogoFelinos = signal<FelinoInfoBasic[]>([]);
+  filteredFelinos$!: Observable<FelinoInfoBasic[]>;
 
   ngOnInit(): void {
     this.form = this.fb.group({

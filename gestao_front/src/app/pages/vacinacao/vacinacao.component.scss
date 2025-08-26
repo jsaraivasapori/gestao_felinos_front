@@ -118,19 +118,32 @@
 .status-chip--atrasado {
   background-color: #f8d7da !important;
   color: #721c24 !important;
+  font-size: 15px;
+  border-radius: 10px;
 }
 
 .status-chip--em-andamento {
   background-color: #fff3cd !important;
   color: #856404 !important;
+  font-size: 15px;
+  border-radius: 10px;
 }
 
 .status-chip--completo {
   background-color: #d4edda !important;
   color: #155724 !important;
+  font-size: 15px;
+  border-radius: 10px;
 }
 
 .status-chip--pendente {
   background-color: #e2e3e5 !important;
   color: #383d41 !important;
+  font-size: 15px;
+  border-radius: 10px;
+}
+.list-item-actions {
+  display: flex; // 1. Transforma o container em um "flex container".
+  align-items: center; // 2. << ESTA É A LINHA MÁGICA! Alinha os itens verticalmente ao centro.
+  gap: 8px; // 3. (Opcional, mas bom) Garante um espaço entre o chip e o botão.
 }

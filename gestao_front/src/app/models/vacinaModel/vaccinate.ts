@@ -1,7 +1,7 @@
 export interface VaccinetionCreate {
   felinoId: string;
   vacinaId: string;
-  laboratorio?: string;
+  laboratorio: string;
   lote: string;
   medVet: string;
   valorPago: number;

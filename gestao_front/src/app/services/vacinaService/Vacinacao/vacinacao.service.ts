@@ -17,47 +17,13 @@ export class VacinacaoService {
   private apiUrl = environment.API_URL;
   readonly dataTable = signal<any[]>([]);
 
-  constructor(private http: HttpClient) {
-    this.getDataToTable();
-  }
+  constructor(private http: HttpClient) {}
 
-  getDataToTable() {
-    return this.http.get<any[]>(`${this.apiUrl}/vacinas/vacinacao`).subscribe({
-      next: (dados) => {
-        const mappedData = dados.map((data) =>
-          this.formatarRegistroVacinal(data)
-        );
-        this.dataTable.set(mappedData);
-      },
-      error: (erro) => console.error('Erro ao carregar', erro),
-    });
-  }
   createVaccination(vaccination: VaccinetionCreate) {
-    return this.http
-      .post<VaccinetionCreate>(`${this.apiUrl}/vacinas/vacinacao`, vaccination)
-      .pipe(
-        tap(() => {
-          this.getDataToTable();
-        })
-      );
-  }
-
-  private formatarRegistroVacinal(data: any) {
-    const date = new Date(data.dataAplicacao);
-    const formattedDate = date.toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: '2-digit',
-    });
-
-    return {
-      felino: data.felino.nome,
-      vacina: data.vacina.nome,
-      dataAplicacao: formattedDate,
-      protocoloVacinalStatus: data.protocoloVacinal.status.toLowerCase(),
-      felinoId: data.felino.id,
-      protocoloVacinalId: data.protocoloVacinal.id,
-    };
+    return this.http.post<VaccinetionCreate>(
+      `${this.apiUrl}/vacinas/registrar`,
+      vaccination
+    );
   }
 
   /**
@@ -82,7 +48,7 @@ export class VacinacaoService {
    * Busca os protocolos que exigem atenção imediata (atrasados ou vencendo em breve).
    */
   getAcoesUrgentes(): Observable<ProtocoloVacinal[]> {
-    return this.http.get<ProtocoloVacinal[]>(`${this.apiUrl}/alertas`);
+    return this.http.get<ProtocoloVacinal[]>(`${this.apiUrl}/vacinas/alertas`);
   }
 
   /**
@@ -91,7 +57,7 @@ export class VacinacaoService {
   getAtividadesRecentes(): Observable<AplicacaoVacina[]> {
     // Crie este endpoint no seu backend!
     return this.http.get<AplicacaoVacina[]>(
-      `${this.apiUrl}/aplicacoes/recentes`
+      `${this.apiUrl}/vacinas/ultimas-aplicacoes`
     );
   }
 
@@ -99,6 +65,8 @@ export class VacinacaoService {
    * Busca os próximos agendamentos de reforços anuais.
    */
   getProximosAgendamentos(): Observable<ProtocoloVacinal[]> {
-    return this.http.get<ProtocoloVacinal[]>(`${this.apiUrl}/reforcos-anuais`);
+    return this.http.get<ProtocoloVacinal[]>(
+      `${this.apiUrl}/vacinas/reforcos-anauais`
+    );
   }
 }

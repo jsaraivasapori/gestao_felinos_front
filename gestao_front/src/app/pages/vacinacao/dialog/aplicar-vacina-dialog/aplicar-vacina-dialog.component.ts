@@ -97,9 +97,9 @@ export class AplicarVacinaDialogComponent implements OnInit {
     });
 
     if (this.data.protocolo) {
-      this.vacinaInputCtrl.setValue(this.data.protocolo.vacina);
+      this.vacinaInputCtrl.setValue(this.data.protocolo.vacina.nome);
       this.vacinaInputCtrl.disable();
-      this.felinoInputCtrl.setValue(this.data.protocolo.felino);
+      this.felinoInputCtrl.setValue(this.data.protocolo.felino.nome);
       this.felinoInputCtrl.disable();
     } else {
       this.carregarCatalogos(); // A chamada continua aqui

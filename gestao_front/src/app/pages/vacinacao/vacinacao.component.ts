@@ -15,6 +15,7 @@ import {
   StatusCiclo,
 } from '../../models/vacinaModel/vacina';
 import { DetalhesProtocoloDialogComponent } from './dialog/detalhes-protocolo-dialog/detalhes-protocolo-dialog.component';
+import { SnackBarNotificationService } from '../../services/snackBarNotification/snack-bar-notification.service';
 
 @Component({
   selector: 'app-vacinacao',
@@ -34,7 +35,8 @@ import { DetalhesProtocoloDialogComponent } from './dialog/detalhes-protocolo-di
 })
 export class VacinacaoComponent implements OnInit {
   private vacinacaoService = inject(VacinacaoService);
-  private dialog = inject(MatDialog); // Injete o MatDialog
+  private dialog = inject(MatDialog);
+  private notificationService = inject(SnackBarNotificationService);
 
   // Signals para o estado do componente
   kpis = signal<VacinacaoKpis | null>(null);
@@ -75,7 +77,20 @@ export class VacinacaoComponent implements OnInit {
         console.log('Dialog fechado com resultado:', resultado);
         // Aqui você chamaria o this.vacinacaoService.registrar(resultado)
         // E depois chamaria this.carregarDadosDoDashboard() para atualizar a tela
-        this.vacinacaoService.createVaccination(resultado).subscribe();
+        this.vacinacaoService.createVaccination(resultado).subscribe({
+          next: () => {
+            this.notificationService.showSucess(
+              'Vacina registrada com sucesso!'
+            );
+            this.carregarDadosDoDashboard();
+          },
+          error: (err) => {
+            console.error('Erro ao registrar vacina:', err);
+            this.notificationService.shoError(
+              'Erro ao registrar vacina. Tente novamente.'
+            );
+          },
+        });
       }
     });
   }
@@ -88,7 +103,20 @@ export class VacinacaoComponent implements OnInit {
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
         console.log('Dialog (urgente) fechado com resultado:', resultado);
-        // Lógica idêntica à de cima para salvar e recarregar
+        this.vacinacaoService.createVaccination(resultado).subscribe({
+          next: () => {
+            this.notificationService.showSucess(
+              'Vacina registrada com sucesso!'
+            );
+            this.carregarDadosDoDashboard();
+          },
+          error: (err) => {
+            console.error('Erro ao registrar vacina:', err);
+            this.notificationService.shoError(
+              'Erro ao registrar vacina. Tente novamente.'
+            );
+          },
+        });
       }
     });
   }

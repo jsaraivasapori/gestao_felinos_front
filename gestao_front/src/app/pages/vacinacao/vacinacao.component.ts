@@ -16,6 +16,7 @@ import {
 } from '../../models/vacinaModel/vacina';
 import { DetalhesProtocoloDialogComponent } from './dialog/detalhes-protocolo-dialog/detalhes-protocolo-dialog.component';
 import { SnackBarNotificationService } from '../../services/snackBarNotification/snack-bar-notification.service';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-vacinacao',
@@ -29,6 +30,7 @@ import { SnackBarNotificationService } from '../../services/snackBarNotification
     MatButtonModule,
     MatProgressSpinnerModule,
     MatDialogModule,
+    MatTooltip,
   ],
   templateUrl: './vacinacao.component.html',
   styleUrl: './vacinacao.component.scss',
@@ -75,8 +77,7 @@ export class VacinacaoComponent implements OnInit {
     dialogRef.afterClosed().subscribe((resultado) => {
       if (resultado) {
         console.log('Dialog fechado com resultado:', resultado);
-        // Aqui você chamaria o this.vacinacaoService.registrar(resultado)
-        // E depois chamaria this.carregarDadosDoDashboard() para atualizar a tela
+
         this.vacinacaoService.createVaccination(resultado).subscribe({
           next: () => {
             this.notificationService.showSucess(
@@ -91,6 +92,8 @@ export class VacinacaoComponent implements OnInit {
             );
           },
         });
+      } else {
+        console.warn('Operação cancelada ou sem dados.');
       }
     });
   }
